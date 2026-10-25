@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#dcefeb">
+<title>Once Upon a Journey</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --sea:#dcefeb; --paper:#fbfdfc; --ink:#16314a; --ink-soft:#4a6178; --line:#b9d4cf;
+  --coral:#ee6c4d; --sun:#f6b73c; --lagoon:#2a9d8f; --danger:#b3402b; --plum:#2a1646;
+  --radius:18px;
+  --serif:"Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--sea:#10242f; --paper:#17323f; --ink:#e8f3f0; --ink-soft:#a3bcc4; --line:#2c4b57; --danger:#ff8d77;}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--sea);color:var(--ink);font-family:var(--sans);line-height:1.5;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);min-height:100vh}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:6px}
+.wrap{max-width:760px;margin:0 auto;padding:24px 18px 64px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.15;margin:0}
+h1{font-size:clamp(2.2rem,8vw,3.4rem);letter-spacing:-.01em}
+h2{font-size:1.5rem}
+h3{font-size:1.2rem}
+p{margin:0}
+.lede{color:var(--ink-soft);margin:.5rem 0 0;max-width:50ch}
+.lbl{display:block;font-weight:600;margin-bottom:6px}
+.hint{font-size:.85rem;color:var(--ink-soft);margin:2px 0 8px}
+
+.btn{border:2px solid var(--ink);background:transparent;border-radius:999px;padding:8px 16px;font-weight:600;transition:background .15s,color .15s,transform .1s}
+.btn:hover{background:var(--ink);color:var(--sea)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--coral);border-color:var(--coral);color:#fff;padding:13px 26px;font-size:1.05rem}
+.btn.primary:hover{background:#d85a3c;border-color:#d85a3c;color:#fff}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.small{padding:6px 12px;font-size:.88rem}
+.btn.ghost{border-color:var(--line)}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn.danger:hover{background:var(--danger);color:#fff}
+.btn.danger-solid{background:var(--danger);border-color:var(--danger);color:#fff}
+.actions{margin:22px 0 0;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* faces */
+.face{width:100%;height:100%;overflow:visible;display:block}
+.face .smile,.face .frown{display:none}
+.face.happy .smile,.face.m-happy .smile,.face.m-love .smile{display:block}
+.face.happy .flat,.face.m-happy .flat,.face.m-love .flat,.face.m-sad .flat{display:none}
+.face.m-sad .frown{display:block}
+.face.m-love .cheek{opacity:.7}
+.face.happy{animation:wiggle .5s}
+@keyframes wiggle{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.face-btn{background:none;border:0;padding:0;display:block;margin:0 auto 4px;width:84px;height:84px;border-radius:50%}
+
+/* home */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+@media (min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}.grid.many{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);padding:16px 10px 12px;text-align:center;position:relative}
+.x{position:absolute;top:6px;right:6px;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:var(--paper);color:var(--ink-soft);font-size:1.1rem;line-height:1;display:grid;place-items:center;padding:0}
+.x:hover{border-color:var(--danger);color:var(--danger)}
+.pname{font-family:var(--serif);font-size:1.05rem;font-weight:700;margin:2px 0 8px;overflow-wrap:anywhere}
+.add{margin-top:14px}
+.min-note{font-size:.85rem;color:var(--ink-soft);margin:12px 0 0}
+.sect{margin-top:30px}
+.sect h2{margin-bottom:4px}
+.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 4px}
+.minis.two{grid-template-columns:repeat(2,1fr)}
+.mini{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center;line-height:1.25;font-size:.84rem}
+.mini .me{font-size:1.7rem;display:block;margin-bottom:2px}
+.mini b{display:block;font-size:.95rem}
+.mini[aria-pressed=true]{border-color:var(--coral);background:linear-gradient(rgba(238,108,77,.16),rgba(238,108,77,.16)),var(--paper)}
+.camline{font-size:.9rem;color:var(--ink-soft);margin-top:10px}
+details.more{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:22px}
+details.more summary{cursor:pointer;font-weight:600}
+details.more h3{font-size:1.05rem;margin:16px 0 4px}
+details.more p{font-size:.94rem}
+details.more ul,details.more ol{margin:6px 0 0;padding-left:1.3em;font-size:.94rem}
+details.more li{margin:5px 0}
+details.more .heroh{color:var(--lagoon)}
+details.more .vilh{color:var(--danger)}
+footer{margin-top:44px;padding-top:18px;border-top:2px dashed var(--line);font-size:.88rem;color:var(--ink-soft)}
+footer .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.field{margin:16px 0}
+.field>label{display:block;font-weight:600;margin-bottom:6px}
+input[type=text],input[type=password]{width:100%;padding:11px 14px;border:2px solid var(--line);border-radius:12px;background:var(--sea)}
+
+/* sheets */
+.overlay{position:fixed;inset:0;background:rgba(10,25,38,.55);display:flex;align-items:flex-end;justify-content:center;z-index:10}
+.overlay.top{z-index:30}
+@media (min-width:640px){.overlay{align-items:center}}
+.sheet{background:var(--paper);width:100%;max-width:560px;max-height:94vh;overflow:auto;border-radius:24px 24px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));animation:rise .25s ease-out}
+.sheet.narrow{max-width:420px}
+@media (min-width:640px){.sheet{border-radius:24px}}
+@keyframes rise{from{transform:translateY(24px);opacity:0}}
+.sheet header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.sheet header .face-btn{width:64px;height:64px;margin:0;flex-shrink:0}
+.src{font-size:.82rem;color:var(--ink-soft);margin:2px 0 0}
+.picker{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (min-width:480px){.picker{grid-template-columns:repeat(6,1fr)}}
+.pick{border:2px solid var(--line);background:transparent;border-radius:14px;padding:6px 2px 4px;font-size:.7rem;line-height:1.15;text-align:center}
+.pick .pv{width:48px;height:48px;margin:0 auto 2px}
+.pick[aria-pressed=true]{border-color:var(--coral);background:linear-gradient(rgba(238,108,77,.16),rgba(238,108,77,.16)),var(--paper)}
+.pick[disabled]{opacity:.35;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:transparent;border-radius:999px;padding:6px 13px;font-size:.92rem}
+.chip[aria-pressed=true]{background:var(--lagoon);border-color:var(--lagoon);color:#fff}
+.sheet-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.checkrow{display:flex;gap:10px;align-items:center;font-size:.92rem;margin-top:10px}
+.checkrow input{width:20px;height:20px;accent-color:var(--coral)}
+.warnbox{background:rgba(246,183,60,.18);border:2px solid var(--sun);border-radius:12px;padding:10px 12px;font-size:.88rem;margin-top:14px}
+.banner{background:rgba(246,183,60,.18);border:2px solid var(--sun);border-radius:12px;padding:10px 14px;font-size:.92rem;margin:16px 0}
+.banner.err{background:rgba(179,64,43,.12);border-color:var(--danger)}
+
+/* HUD */
+.hud{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.hud-mid{flex:1;min-width:0}
+.hl{font-size:.82rem;color:var(--ink-soft);display:block;margin-bottom:3px}
+.hope{display:flex;gap:3px}
+.hope i{flex:1;height:10px;border-radius:99px;background:var(--line);transition:background .6s}
+.hope i.on{background:linear-gradient(90deg,var(--sun),var(--coral))}
+.chip-soft{font-size:.78rem;color:var(--ink-soft);white-space:nowrap}
+.cam{border:2px solid var(--lagoon);background:transparent;border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:700;color:var(--lagoon);white-space:nowrap}
+
+/* stage */
+.stage{position:sticky;top:8px;z-index:5;height:300px;border-radius:var(--radius);overflow:hidden;border:3px solid var(--ink);background:#222}
+@media (max-width:480px){.stage{height:280px}}
+@media (max-height:720px){.stage{height:220px}}
+.bd{position:absolute;inset:0}
+.bd svg{width:100%;height:100%;display:block}
+.cloud{animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(40px)}}
+.bulb{animation:twinkle 1s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.35}to{opacity:1}}
+.prop{position:absolute;top:10px;right:14px;font-size:2.6rem;animation:bob 2.4s ease-in-out infinite;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.pathline{position:absolute;left:0;right:0;bottom:20px;height:4px;opacity:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.75) 0 14px,transparent 14px 28px)}
+.stage.moving .pathline{opacity:1;animation:walk 1s linear infinite}
+@keyframes walk{to{background-position:-28px 0}}
+.bubble{position:absolute;top:10px;left:12px;right:84px;max-width:400px;background:#fff;color:#16314a;border-radius:14px;padding:6px 11px;font-size:.9rem;line-height:1.25;box-shadow:0 3px 10px rgba(0,0,0,.25);animation:pop .3s ease-out}
+.bubble[hidden]{display:none}
+.bubble .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.stage.nopropv .bubble{right:12px}
+.cast{position:absolute;left:0;right:0;bottom:6px;display:flex;align-items:flex-end;padding:0 6px}
+.actor{flex:1 1 0;min-width:0;max-width:120px;margin:0 auto;text-align:center;position:relative}
+.actor .av{width:min(78px,88%);aspect-ratio:1;margin:0 auto}
+.actor .nm{display:block;font-size:.68rem;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.fx{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:1.3rem;pointer-events:none;z-index:2}
+.fx.love,.fx.happy{animation:floatup 1.8s ease-out infinite}
+.fx.meh{animation:bob 2s ease-in-out infinite}
+.fx.sad{animation:drip 1.4s ease-in infinite}
+@keyframes floatup{from{opacity:0;transform:translate(-50%,10px)}30%{opacity:1}to{opacity:0;transform:translate(-50%,-22px)}}
+@keyframes drip{from{opacity:0;transform:translate(-50%,-6px)}30%{opacity:1}to{opacity:0;transform:translate(-50%,16px)}}
+.cast.walk-in .actor{animation:walkin .9s ease-out both;animation-delay:calc(var(--i)*.14s)}
+@keyframes walkin{from{opacity:0;transform:translateX(-140%)}}
+.cast.acting.lively .av{animation:hop .55s ease-in-out infinite alternate}
+.cast.acting.calm .av{animation:sway 1.8s ease-in-out infinite alternate}
+@keyframes hop{to{transform:translateY(-9px)}}
+@keyframes sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+.actor.speaking .av{animation:talk .45s ease-in-out 3}
+@keyframes talk{50%{transform:translateY(-12px) scale(1.06)}}
+.actor.spot .av{transform:scale(1.22);transform-origin:50% 100%}
+.panel{margin-top:14px;background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);padding:16px}
+.narr{display:flex;gap:10px;align-items:flex-start}
+.narr-ico{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--plum);display:grid;place-items:center;font-size:1.2rem}
+.narr-text{font-size:1rem;padding-top:5px}
+.kick{font-size:.82rem;color:var(--ink-soft)}
+.meta{font-size:.9rem;color:var(--ink-soft)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96)}}
+.optlist{display:grid;gap:8px;margin-top:12px}
+.opt{display:flex;gap:12px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.opt .oe{font-size:1.7rem}
+.opt b{font-weight:600}
+.tally{margin-top:12px;display:grid;gap:8px}
+.trow{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;padding:8px 12px;animation:pop .4s ease-out both;animation-delay:calc(var(--k)*.5s)}
+.trow.win{border-color:var(--sun);background:rgba(246,183,60,.22)}
+.trow .te{font-size:1.6rem}
+.trow .tmid{flex:1;min-width:0;font-weight:600;line-height:1.25}
+.trow .tcount{font-family:var(--serif);font-size:1.6rem;font-weight:700}
+.later{animation:pop .5s ease-out both;animation-delay:var(--d,1.8s)}
+.notice{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(42,22,70,.1);border:2px solid var(--plum);font-size:.95rem}
+.timer{font-family:var(--serif);font-size:2.6rem;text-align:center;margin:12px 0 4px;font-variant-numeric:tabular-nums}
+.pcast{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pcast .pc{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600}
+.pcast .pc .mv{width:36px;height:36px}
+
+/* secret screens */
+.secret{background:linear-gradient(180deg,#2a1646,#3b1d57);color:#fff;border-radius:var(--radius);padding:20px 18px;min-height:400px;position:relative}
+.secret h2{color:#fff}
+.secret .sub{color:#d9c9f0;font-size:.92rem;margin-top:4px}
+.secret .btn{border-color:#fff;color:#fff}
+.secret .btn:hover{background:#fff;color:#2a1646}
+.secret .btn.primary{background:var(--coral);border-color:var(--coral)}
+.secret .btn[disabled]:hover{background:transparent;color:#fff}
+.secret .btn.primary[disabled]:hover{background:var(--coral);color:#fff}
+.lock{text-align:center}
+.lock .big{width:120px;height:120px;margin:6px auto 10px;animation:bob 2.4s ease-in-out infinite}
+.camprev{width:132px;height:99px;border-radius:14px;object-fit:cover;transform:scaleX(-1);border:4px solid #888;background:#111;margin:12px auto 4px;display:block}
+.camprev.clear{border-color:#4fd18b}
+.camprev.pending{border-color:#f6b73c}
+.camprev.crowded,.camprev.empty{border-color:#ff6b57}
+.gstat{font-weight:600;margin:8px 0 14px;min-height:1.5em}
+.gbar{font-size:.8rem;color:#bfe9d0;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.gbar i{width:9px;height:9px;border-radius:50%;background:#4fd18b;display:inline-block}
+.rolecard{text-align:center;padding:6px 0}
+.rolecard .rbig{font-size:4rem;line-height:1.1}
+.rolecard p{margin:10px auto 18px;max-width:34ch}
+.rolecard.vil h2{color:#ff9d8c}
+.clue{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.3);border-radius:16px;padding:14px 16px;margin-top:14px;font-size:1.05rem}
+.clue .tag{display:inline-block;font-size:.75rem;font-weight:800;border-radius:999px;padding:1px 10px;margin-bottom:6px;background:var(--sun);color:#3b2a00}
+.clue .tag.faint{background:#cdbbe8;color:#2a1646}
+.truth{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.truth li{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.1);border-radius:12px;padding:10px 12px;border-left:6px solid}
+.truth li.good{border-color:#4fd18b}
+.truth li.mixed{border-color:#f6b73c}
+.truth li.trap{border-color:#ff6b57}
+.truth small{display:block;color:#d9c9f0}
+.vopts{display:grid;gap:10px;margin-top:14px}
+.vopt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.25);border-radius:16px;padding:12px;color:#fff}
+.vopt:hover{border-color:#fff}
+.vopt.sel{border-color:var(--sun);background:rgba(246,183,60,.22)}
+.vopt .num{width:32px;height:32px;border-radius:50%;background:#fff;color:#2a1646;font-weight:800;display:grid;place-items:center;flex-shrink:0}
+.vopt .ve{font-size:1.7rem}
+.vopt .vl{flex:1;line-height:1.25}
+.vopt .va{width:36px;height:36px;flex-shrink:0}
+.shadow{display:flex;gap:10px;align-items:center;margin-top:14px;background:rgba(0,0,0,.25);border:2px dashed #ff9d8c;border-radius:14px;padding:10px 12px;font-size:.94rem}
+.shadow input{width:20px;height:20px;flex-shrink:0;accent-color:#ff6b57}
+.fing{margin-top:14px;font-size:.88rem;color:#d9c9f0}
+.fbar{height:8px;border-radius:99px;background:rgba(255,255,255,.2);overflow:hidden;margin-top:6px}
+.fbar i{display:block;height:100%;width:0;background:var(--sun);transition:width .12s linear}
+.guide{text-align:left;margin-top:6px}
+.guide h3{font-size:1rem;color:#fff;margin:14px 0 2px}
+.guide ol,.guide ul{margin:6px 0 0;padding-left:1.3em;font-size:.95rem}
+.guide li{margin:5px 0}
+.goalline{background:rgba(255,255,255,.1);border-radius:12px;padding:10px 12px;margin:12px 0 0;font-size:.95rem;text-align:left}
+details.remind{margin-top:16px;background:rgba(255,255,255,.08);border-radius:12px;padding:8px 12px;font-size:.9rem}
+details.remind summary{cursor:pointer;font-weight:600}
+details.remind ul{margin:8px 0 2px;padding-left:1.2em}
+details.remind li{margin:4px 0}
+.obst{position:absolute;inset:0;pointer-events:none;transition:opacity .8s,filter .8s}
+.obst svg{width:100%;height:100%;display:block}
+.floaty{animation:bob 2.6s ease-in-out infinite}
+.pulse{animation:pulseA 1.6s ease-in-out infinite alternate}
+.twinkle{animation:pulseA 1.1s ease-in-out infinite alternate}
+@keyframes pulseA{from{opacity:.55}to{opacity:1}}
+.eye{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.sway{transform-box:fill-box;transform-origin:50% 0;animation:swayb 2.6s ease-in-out infinite alternate}
+@keyframes swayb{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+.swirl{transform-box:fill-box;transform-origin:center;animation:spin 6s linear infinite}
+.rain line{animation:rainfall .9s linear infinite}
+@keyframes rainfall{from{transform:translate(0,0);opacity:0}15%{opacity:1}to{transform:translate(-8px,72px);opacity:0}}
+.bolt{opacity:.9;animation:flash 3.2s infinite}
+@keyframes flash{0%,86%,100%{opacity:0}88%{opacity:1}90%{opacity:.1}92%{opacity:1}96%{opacity:0}}
+.ripple{transform-box:fill-box;transform-origin:center;animation:ripp 2.4s ease-out infinite}
+@keyframes ripp{from{transform:scale(.6);opacity:.9}to{transform:scale(1.25);opacity:0}}
+.titlecard{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;background:rgba(14,18,40,.62);opacity:0;pointer-events:none;animation:tcard 3.4s ease-in-out both;padding:0 18px;z-index:4}
+.titlecard small{display:block;font-size:.85rem;opacity:.85;margin-bottom:4px}
+.titlecard h2{color:#fff;font-size:clamp(1.5rem,6vw,2.2rem);text-shadow:0 2px 12px rgba(0,0,0,.6)}
+@keyframes tcard{0%{opacity:0;transform:scale(.96)}14%{opacity:1;transform:scale(1)}78%{opacity:1}100%{opacity:0}}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s;z-index:3}
+.stage.res-good::after{opacity:1;background:radial-gradient(circle at 50% 42%,rgba(255,230,120,.6),transparent 68%)}
+.stage.res-mixed::after{opacity:1;background:radial-gradient(circle at 50% 42%,rgba(210,210,210,.4),transparent 70%)}
+.stage.res-trap::after{opacity:1;background:radial-gradient(circle at 50% 42%,rgba(255,60,40,.55),transparent 72%)}
+.stage.res-trap{animation:shake .55s}
+.stage.res-mixed{animation:shake .35s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.stage.res-good .obst{opacity:.3;filter:saturate(.4)}
+.burst{position:absolute;left:50%;top:38%;font-size:4.2rem;opacity:0;transform:translate(-50%,-50%);animation:burst 1.4s ease-out both;pointer-events:none;z-index:4}
+@keyframes burst{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.5)}100%{opacity:0;transform:translate(-50%,-70%) scale(1.1)}}
+.starters{margin:12px 0 0;padding-left:1.2em;font-size:.95rem}
+.starters li{margin:5px 0}
+.truth-row{border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:10px}
+.truth-row .tt{font-weight:600;margin-bottom:6px}
+.kopt{display:flex;gap:10px;align-items:center;font-size:.92rem;margin:4px 0}
+.kopt .kt{font-size:.72rem;font-weight:800;border-radius:999px;padding:1px 9px;color:#fff;flex-shrink:0}
+.kt.good{background:var(--lagoon)}
+.kt.mixed{background:#c98a14}
+.kt.trap{background:var(--danger)}
+.kopt.pickd{font-weight:700}
+.thumbhint{margin-top:12px;font-size:.88rem;color:var(--ink-soft)}
+.secret .thumbhint{color:#d9c9f0}
+.panel .fbar{background:var(--line)}
+.panel .fbar i{background:var(--coral)}
+.shadow b{font-family:var(--serif)}
+.hintbox{margin-top:12px}
+.hintbox>b{font-size:.85rem;color:#d9c9f0;font-weight:600}
+.hintbox .clue{margin-top:6px;padding:10px 12px;font-size:.98rem}
+.truth.compact{gap:5px;margin-top:6px}
+.truth.compact li{padding:6px 10px;font-size:.92rem}
+.breach{text-align:center;padding:40px 0}
+.breach .bi{font-size:3.4rem}
+.sealed{text-align:center;padding:44px 0}
+.sealed .tk{font-size:3.4rem;animation:ticket .8s ease-out both}
+@keyframes ticket{from{opacity:0;transform:translateY(40px) rotate(-30deg) scale(.4)}}
+
+/* ending */
+.endban{text-align:center;padding:6px 0 4px}
+.endban .eb{font-size:3.4rem;line-height:1.1}
+.checks{display:grid;gap:8px;margin:14px 0}
+.checks .ck{display:flex;gap:10px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:8px 12px}
+.checks .ck.ok{border-color:var(--lagoon)}
+.checks .ck.no{border-color:var(--danger)}
+.checks .ck .mk{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.85rem;flex-shrink:0}
+.checks .ck.ok .mk{background:var(--lagoon)}
+.checks .ck.no .mk{background:var(--danger)}
+.unmask{display:flex;gap:14px;align-items:center;margin:14px 0;padding:12px;border-radius:16px;background:var(--plum);color:#fff}
+.unmask .uv{width:64px;height:64px;flex-shrink:0}
+.led{display:grid;gap:8px;margin-top:10px}
+.led .lr{border:2px solid var(--line);border-radius:14px;padding:8px 10px;font-size:.9rem}
+.led .lt{font-weight:600;margin-bottom:4px}
+.led .pk{display:inline-flex;align-items:center;gap:4px;margin-right:12px}
+.led .pk .la{width:24px;height:24px}
+.loading{text-align:center;padding:48px 10px}
+.spin{width:44px;height:44px;margin:0 auto 16px;border-radius:50%;border:5px solid var(--line);border-top-color:var(--coral);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--sea);padding:10px 18px;border-radius:999px;font-size:.92rem;z-index:40}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* =====================================================
+   Storybook roster (public-domain tales; art drawn for this app)
+   ===================================================== */
+const m = s => `<g transform="translate(80 0) scale(-1 1)">${s}</g>`;
+const HB = {
+  long: c => `<path d="M17 40Q14 12 40 11Q66 12 63 40L67 68Q40 74 13 68Z" fill="${c}"/>`,
+  bob:  c => `<path d="M17 40Q14 12 40 11Q66 12 63 40L63 55Q40 60 17 55Z" fill="${c}"/>`
+};
+const FR = c => `<path d="M19 37Q18 14 40 14Q62 14 61 37Q50 23 33 26Q24 28 19 37Z" fill="${c}"/>`;
+const prop = (x, y, str) => `<g transform="translate(${x} ${y})">${str}</g>`;
+const spark = (x, y, s = 1, c = '#fff') =>
+  `<path d="M${x} ${y-6*s}L${x+1.6*s} ${y-1.6*s}L${x+6*s} ${y}L${x+1.6*s} ${y+1.6*s}L${x} ${y+6*s}L${x-1.6*s} ${y+1.6*s}L${x-6*s} ${y}L${x-1.6*s} ${y-1.6*s}Z" fill="${c}"/>`;
+const pearls = [[29,60],[34,62.5],[40,63.5],[46,62.5],[51,60]]
+  .map(([x,y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="#fff8ee" stroke="#d9cdbd" stroke-width=".5"/>`).join('');
+const fin = `<path d="M21 36Q8 33 8 20Q20 22 24 31Z" fill="#f08a7a"/>`;
+const wing = `<ellipse cx="19" cy="30" rx="7" ry="17" transform="rotate(-28 19 30)" fill="#fff" opacity=".8" stroke="#fff6c8" stroke-width="1.5"/>`;
+const leaves = [[28,59,-30],[34,62,-10],[40,63,0],[46,62,10],[52,59,30]]
+  .map(([x,y,r]) => `<path d="M0 0Q6 -7 12 0Q6 7 0 0Z" transform="translate(${x-6} ${y}) rotate(${r} 6 0)" fill="#3f8f4a" stroke="#2c6b36" stroke-width="1"/>`).join('');
+const pipes = [[56,66,10],[61,64,12],[66,62,14]]
+  .map(([x,y,h]) => `<rect x="${x}" y="${y}" width="4" height="${h}" rx="1" fill="#e0b868" stroke="#9a7424" stroke-width=".8"/>`).join('');
+const pipesP = prop(-6, -8, pipes);
+const braid = [[24,44],[22,50],[25,56],[22,62],[25,68],[22,74],[24,80]]
+  .map(([x,y]) => `<ellipse cx="${x}" cy="${y}" rx="5" ry="4.2" fill="#f0c445" stroke="#c99a1e" stroke-width="1"/>`).join('');
+const curls = [[18,36],[16,46],[20,56],[62,36],[64,46],[60,56],[26,18],[40,12],[54,18]]
+  .map(([x,y]) => `<circle cx="${x}" cy="${y}" r="8" fill="#f2c94c"/>`).join('');
+
+const CHARS = [
+ {id:'mermaid', name:'Little Mermaid', src:'Hans Christian Andersen, 1837',
+  bg:'#2a9d8f', skin:'#f2c9a5', hair:'#2f8f6b', cloth:'#6fcfbc',
+  behind:`<circle cx="64" cy="18" r="3.2" fill="none" stroke="#fff" opacity=".8"/><circle cx="70" cy="28" r="2" fill="none" stroke="#fff" opacity=".8"/><circle cx="12" cy="24" r="2.4" fill="none" stroke="#fff" opacity=".8"/>`,
+  back:HB.long('#2f8f6b'), acc: fin + m(fin) + pearls},
+ {id:'tinker', name:'Tinker Bell', src:'J. M. Barrie, Peter Pan, 1904 and 1911',
+  bg:'#f6c95a', skin:'#f6d5b8', hair:'#4b2f22', cloth:'#fff1bf',
+  behind:`<circle cx="40" cy="38" r="30" fill="#fff8d6" opacity=".75"/>` + wing + m(wing),
+  back:HB.bob('#4b2f22'), acc: spark(62,12,1) + spark(14,14,.8) + spark(66,50,.6)},
+ {id:'peter', name:'Peter Pan', src:'J. M. Barrie, Peter Pan, 1904 and 1911',
+  bg:'#5aa469', skin:'#f1c7a2', hair:'#a8561f', cloth:'#8a6a3a',
+  back:`<path d="M23 24L27 7L33 17L40 4L47 17L53 7L57 24Z" fill="#a8561f"/>`, acc: leaves + pipesP},
+ {id:'aladdin', name:'Aladdin', src:'One Thousand and One Nights',
+  bg:'#6d4c9f', skin:'#c98f62', hair:'#2b1b17', cloth:'#e0a030',
+  back:HB.bob('#2b1b17'), front:'',
+  acc:`<path d="M16 32Q14 6 40 6Q66 6 64 32Q40 20 16 32Z" fill="#f5ecd2" stroke="#d3be86" stroke-width="1.5"/><path d="M19 26Q40 12 61 26" fill="none" stroke="#d3be86" stroke-width="1.3"/><path d="M17 30Q40 17 63 30" fill="none" stroke="#d3be86" stroke-width="1.3"/><circle cx="40" cy="15" r="3.6" fill="#d6453d" stroke="#e2b53a" stroke-width="1.4"/>`
+     + prop(-8, -9, `<path d="M54 70Q58 64 68 66Q72 70 66 74Q58 76 54 70Z" fill="#e8b22b" stroke="#a8780f" stroke-width="1"/><path d="M54 70L48 66" stroke="#a8780f" stroke-width="2" stroke-linecap="round"/><path d="M68 66Q75 64 72 71" fill="none" stroke="#a8780f" stroke-width="1.6"/><path d="M60 62Q56 56 62 51" fill="none" stroke="#fff" stroke-width="1.6" opacity=".7"/>`)},
+ {id:'cinderella', name:'Cinderella', src:'Charles Perrault, 1697, and the Brothers Grimm',
+  bg:'#8ec5e8', skin:'#f5d3b8', hair:'#e2b64f', cloth:'#cfe8f7',
+  back:`<circle cx="40" cy="13" r="8" fill="#e2b64f"/>`,
+  acc:`<circle cx="30" cy="44" r="2.2" fill="#444" opacity=".25"/>` + prop(-8, -10, `<path d="M54 74L54 66Q54 63 58 63L61 63L61 69Q68 69 71 73L71 75Q71 77 69 77L56 77Q54 77 54 74Z" fill="#e6f7ff" stroke="#7cc2e6" stroke-width="1.2"/>`) + spark(66,52,.7,'#fff')},
+ {id:'snowwhite', name:'Snow White', src:'The Brothers Grimm, 1812',
+  bg:'#c9453b', skin:'#fdf0e6', hair:'#15110f', cloth:'#ece0c8',
+  back:HB.bob('#15110f'),
+  acc:prop(-7, -8, `<circle cx="62" cy="68" r="8" fill="#d62f2f" stroke="#a31f1f" stroke-width="1"/><path d="M62 60Q66 55 71 58Q66 62 62 60Z" fill="#4a9a4a"/><path d="M62 61L61 57" stroke="#5a3a22" stroke-width="1.6"/>`)},
+ {id:'redhood', name:'Red Riding Hood', src:'Charles Perrault, 1697, and the Brothers Grimm',
+  bg:'#f2dfc7', skin:'#f3cfae', hair:'#7a4a2a', cloth:'#c62d2d',
+  back:`<path d="M10 74Q2 8 40 7Q78 8 70 74Z" fill="#c62d2d"/>`,
+  front:`<path d="M17 40Q16 16 40 16Q64 16 63 40Q56 28 40 28Q24 28 17 40Z" fill="#c62d2d" stroke="#9d1f1f" stroke-width="1"/>`,
+  acc:`<circle cx="40" cy="62" r="2.2" fill="#e2b53a"/>` + prop(6, -7, `<path d="M12 68Q12 78 21 78L31 78Q38 78 38 68Z" fill="#c28a4a" stroke="#8b5e2b" stroke-width="1"/><path d="M15 68Q25 54 35 68" fill="none" stroke="#8b5e2b" stroke-width="2"/><path d="M13 71L37 71" stroke="#fff" stroke-width="1.4" opacity=".7"/>`)},
+ {id:'rapunzel', name:'Rapunzel', src:'The Brothers Grimm, 1812',
+  bg:'#b79ae0', skin:'#f5d5b7', hair:'#f0c445', cloth:'#e17ba0',
+  back:HB.long('#f0c445'),
+  acc: braid + `<circle cx="30" cy="19" r="3" fill="#ff8fb0"/><circle cx="30" cy="19" r="1.2" fill="#ffe27a"/><circle cx="50" cy="19" r="3" fill="#fff"/><circle cx="50" cy="19" r="1.2" fill="#ffe27a"/>`},
+ {id:'alice', name:'Alice', src:'Lewis Carroll, 1865',
+  bg:'#7fb4d8', skin:'#f4d2b6', hair:'#e9c46a', cloth:'#f4f0e6',
+  back:HB.long('#e9c46a'),
+  acc:`<path d="M20 29Q40 10 60 29" fill="none" stroke="#2b2b3a" stroke-width="3.6" stroke-linecap="round"/>` + prop(-7, -8, `<path d="M62 59Q58 50 52 54" fill="none" stroke="#a8861a" stroke-width="1.4"/><circle cx="62" cy="68" r="9" fill="#f4d77a" stroke="#a8861a" stroke-width="1.4"/><circle cx="62" cy="68" r="6.2" fill="#fffdf2"/><path d="M62 68L62 63.5M62 68L65.6 69.6" stroke="#333" stroke-width="1.2" stroke-linecap="round"/>`)},
+ {id:'puss', name:'Puss in Boots', src:'Charles Perrault, 1697',
+  bg:'#e07a3c', skin:'#e8a44a', hair:'#e8a44a', cloth:'#7a4a2a',
+  back:`<path d="M22 32L19 6L37 20Z" fill="#e8a44a"/><path d="M24 28L23 13L33 21Z" fill="#f4b6a6"/>` + m(`<path d="M22 32L19 6L37 20Z" fill="#e8a44a"/><path d="M24 28L23 13L33 21Z" fill="#f4b6a6"/>`),
+  front:`<ellipse cx="40" cy="46" rx="10" ry="6.5" fill="#fff3dc"/><path d="M37.5 41.5L42.5 41.5L40 45Z" fill="#e58a8a"/>`,
+  acc:`<path d="M31 46L14 42M31 49L14 51M49 46L66 42M49 49L66 51" stroke="#5a3a22" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="40" cy="21" rx="29" ry="6" fill="#5a3a22"/><path d="M26 21Q27 3 40 3Q53 3 54 21Z" fill="#6b4529"/><rect x="26.5" y="14.5" width="27" height="4" fill="#e2b53a"/><path d="M52 8Q68 -2 72 12Q62 10 53 14Z" fill="#d6453d"/>`},
+ {id:'pinocchio', name:'Pinocchio', src:'Carlo Collodi, 1883',
+  bg:'#d9a441', skin:'#e3b574', hair:'#e3b574', cloth:'#f3e6c4', front:'',
+  acc:`<path d="M30 29Q34 27 38 29M42 28Q46 26 50 28" fill="none" stroke="#b88a4a" stroke-width="1.2"/><path d="M39 40L68 43.5L39 46Z" fill="#e3b574" stroke="#b88a4a" stroke-width="1.2" stroke-linejoin="round"/><path d="M20 30Q24 9 52 6Q48 15 58 27Q40 19 20 30Z" fill="#f0d9a0" stroke="#c9ad66" stroke-width="1.3"/><circle cx="40" cy="58" r="2.4" fill="#b88a4a"/><circle cx="30" cy="68" r="1.6" fill="#d6453d"/><circle cx="50" cy="70" r="1.6" fill="#4c8bd6"/>`},
+ {id:'goldilocks', name:'Goldilocks', src:'Robert Southey, 1837',
+  bg:'#f2a65a', skin:'#f6d6bf', hair:'#f2c94c', cloth:'#ffd6e0',
+  back:curls,
+  acc:prop(-8, -9, `<path d="M52 66Q52 79 62 79Q72 79 72 66Z" fill="#fff" stroke="#b49a86" stroke-width="1.2"/><ellipse cx="62" cy="66" rx="10" ry="3" fill="#e9c590" stroke="#b49a86" stroke-width="1"/><path d="M58 61Q56 57 59 54M65 61Q63 57 66 54" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>`)}
+];
+const charById = id => CHARS.find(c => c.id === id) || CHARS[0];
+
+let avN = 0;
+function avatar(ch) {
+  const id = 'avc' + (avN++);
+  const front = ch.front === undefined ? FR(ch.hair) : ch.front;
+  return `<svg class="face" viewBox="0 0 80 80" aria-hidden="true">
+    <defs><clipPath id="${id}"><circle cx="40" cy="40" r="38"/></clipPath></defs>
+    <g clip-path="url(#${id})">
+      <rect width="80" height="80" fill="${ch.bg}"/>
+      ${ch.behind || ''}${ch.back || ''}
+      <rect x="35" y="50" width="10" height="14" fill="${ch.skin}"/>
+      <path d="M8 82Q10 59 40 57Q70 59 72 82Z" fill="${ch.cloth}"/>
+      <circle cx="40" cy="38" r="19" fill="${ch.skin}"/>
+      ${front}
+      <circle class="cheek" cx="29" cy="43" r="3.4" fill="#ff8f8f" opacity=".28"/><circle class="cheek" cx="51" cy="43" r="3.4" fill="#ff8f8f" opacity=".28"/>
+      <circle cx="33" cy="37" r="2.8" fill="#16314a"/><circle cx="47" cy="37" r="2.8" fill="#16314a"/>
+      <circle cx="33.9" cy="36" r="1" fill="#fff"/><circle cx="47.9" cy="36" r="1" fill="#fff"/>
+      <path class="flat" d="M34 46Q40 50 46 46" stroke="#16314a" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <path class="smile" d="M32 44Q40 57 48 44Z" fill="#16314a"/>
+      <path class="frown" d="M33 50Q40 43 47 50" stroke="#16314a" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      ${ch.acc || ''}
+    </g>
+    <circle cx="40" cy="40" r="38" fill="none" stroke="rgba(0,0,0,.14)" stroke-width="1.5"/>
+  </svg>`;
+}
+
+/* =====================================================
+   Story content for the built-in storyteller
+   ===================================================== */
+const VOICE = {
+  mermaid:   {good:['The tide is with us!','Salt and starlight, that went swimmingly.'], mixed:['Well, we’re wet, but we’re through.','Smoother than a sandbar, it was not.'], trap:['That was no friendly current!','I should have trusted my feeling about the tide.']},
+  tinker:    {good:['Ha! That worked a treat.','Brilliant, if I do say so myself.'], mixed:['Hmph. A bit scrappy, but fine.','I’ve had better days, and worse.'], trap:['Oh, you great clumsy lot!','My wings are still trembling.']},
+  peter:     {good:['Adventure! That’s how it’s done!','Straight on till success!'], mixed:['Not bad. Not great. Next!','I’ll call that a draw.'], trap:['Ow! Who set that trap?','That was not part of the fun!']},
+  aladdin:   {good:['Luck of the bazaar!','A clever plan, perfectly done.'], mixed:['We made it. Mostly.','Could be worse. Could be better.'], trap:['That plan had a hole in it.','I’ve been tricked by smoother talkers.']},
+  cinderella:{good:['Everything fell into place.','Patience and kindness, as ever.'], mixed:['We managed, though not gracefully.','I’ve scrubbed worse messes.'], trap:['Oh dear. That went badly.','We should have waited before choosing.']},
+  snowwhite: {good:['Wonderful! That was lovely.','What a bright little victory.'], mixed:['A bruise or two, but we’re whole.','Shaken, but nobody’s poisoned.'], trap:['Oh no, something was wrong with that.','I knew it smelled suspicious.']},
+  redhood:   {good:['Straight down the path, safe and sound.','See? No wolves here.'], mixed:['We’re through, but I heard rustling.','Keep your eyes open, friends.'], trap:['Teeth! I felt teeth in that one.','Those eyes were far too big.']},
+  rapunzel:  {good:['Up and over, easy as a braid!','What a view from the top of that win.'], mixed:['A little tangled, but we’re free.','I’ve been in tighter places.'], trap:['That went round in circles.','I’d rather be locked in a tower.']},
+  alice:     {good:['Curiouser and curiouser, it worked!','I believed six impossible things.'], mixed:['That was muddled, but fine.','I’m not sure what happened, but we’re here.'], trap:['Off with my confidence!','Nothing made sense, even for Wonderland.']},
+  puss:      {good:['Boots on, whiskers twitching. Perfection.','A cat always lands on its feet.'], mixed:['I’ve scraped through worse. Barely.','Hmm. My whiskers tingled.'], trap:['A cat has nine lives. That cost one.','Most undignified!']},
+  pinocchio: {good:['I told the truth and it worked!','My nose didn’t even twitch.'], mixed:['That was a bit wooden.','It could have been better.'], trap:['I think I swallowed a splinter.','Someone told a fib, I just know it.']},
+  goldilocks:{good:['Just right!','Not too hot, not too cold. Perfect.'], mixed:['Too hot, too cold… okay, passable.','Not quite just right.'], trap:['That was far too much!','I’m going to need a nap after that.']}
+};
+const INTRO_LINES = ['Ready when you are.','I have a good feeling about this.','Let’s stick together.','What could possibly go wrong?','I’ll watch the road.','Lead the way!'];
+
+const REALMS = {
+  mermaid:   {name:'the Tide Gardens', scene:'water', feature:'a ring of whirling currents', beast:'a sulking tide-troll', tool:'a sea-glass lantern', trap:'The currents seize the party and fling you back.'},
+  tinker:    {name:'the Glowmoth Glade', scene:'night', feature:'a field of tangled moonvines', beast:'a swarm of sleepy glowmoths', tool:'a pinch of glitter-dust', trap:'The vines snap tight and tangle the whole party.'},
+  peter:     {name:'the Treetop Isle', scene:'outdoor', feature:'a swaying rope bridge', beast:'a ticking crocodile', tool:'a coil of vine rope', trap:'The bridge drops and everyone scrambles for the cliff.'},
+  aladdin:   {name:'the Lantern Bazaar', scene:'outdoor', feature:'a maze of crowded stalls', beast:'a bored djinn', tool:'a battered brass lamp', trap:'The merchants close in and your pockets come back lighter.'},
+  cinderella:{name:'the Cinder Ballroom', scene:'indoor', feature:'a staircase of glass', beast:'a very strict clock', tool:'a borrowed ribbon', trap:'The clock strikes early and the floor turns to ash.'},
+  snowwhite: {name:'the Hollow Cottage', scene:'outdoor', feature:'a tiny winding mineshaft', beast:'a talking mirror', tool:'a shiny red apple', trap:'The mirror cackles and the path vanishes behind you.'},
+  redhood:   {name:'the Whispering Wood', scene:'night', feature:'a fork in a dark path', beast:'a polite but hungry wolf', tool:'a basket of warm bread', trap:'Something toothy follows you off the path.'},
+  rapunzel:  {name:'the Thornlit Tower', scene:'outdoor', feature:'a spiral stair with no end', beast:'a grumpy gardener', tool:'a very long braid', trap:'The stair loops back and you lose half the day.'},
+  alice:     {name:'the Tea-Party Maze', scene:'indoor', feature:'a hall of too many doors', beast:'a rabbit who is always late', tool:'a bottle marked DRINK ME', trap:'The doors rearrange and shuffle the party apart.'},
+  puss:      {name:'the Ogre’s Road', scene:'outdoor', feature:'a toll gate with a snoring ogre', beast:'a fox with a ledger', tool:'a pair of very fine boots', trap:'The ogre wakes up grumpy and chases you off.'},
+  pinocchio: {name:'the Puppet Fair', scene:'indoor', feature:'a stage full of tangled strings', beast:'a smiling fox and cat', tool:'a hand-carved whistle', trap:'The strings snap and the whole party is hoisted into the air.'},
+  goldilocks:{name:'the Three Bears’ Cottage', scene:'indoor', feature:'three suspicious chairs', beast:'a very large and very sleepy bear', tool:'a pot of porridge', trap:'The chair breaks and the whole room goes quiet.'}
+};
+const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
+const ARCH = [
+ {id:'crossing', make:(r,g,s) => ({title:`Across ${r.name}`, narration:`Between you and ${g} lies ${r.feature}. ${s} knows this ground best, but even they admit it looks tricky.`,
+   options:[{e:'🏃',label:'Rush it while it looks calm',did:'rushed across while it looked calm'},{e:'🛠️',label:`Make a way with ${r.tool}`,did:`made a way across with ${r.tool}`},{e:'🐾',label:`Follow ${r.beast}`,did:`followed ${r.beast} and copied its path`},{e:'🔄',label:'Take the long way around',did:'took the long way around'},{e:'🎒',label:'Send a scout across first',did:'sent a scout across first'}]})},
+ {id:'guardian', make:(r,g,s) => ({title:`Trouble at ${r.name}`, narration:`${cap(r.beast)} stands guard at ${r.name} and isn’t quite friendly. ${s} whispers that the right approach matters.`,
+   options:[{e:'🎁',label:'Offer it a gift',did:'offered a gift and hoped for the best'},{e:'🎭',label:`Trick it with ${r.tool}`,did:`tried to trick the guardian with ${r.tool}`},{e:'🤫',label:'Tiptoe past while it’s distracted',did:'tiptoed past while the guardian was distracted'},{e:'🗣️',label:'Talk it into stepping aside',did:'talked the guardian into stepping aside'},{e:'📣',label:'Startle it with a loud noise',did:'startled the guardian with a loud noise'}]})},
+ {id:'storm', make:(r,g,s) => ({title:`A Storm Over ${r.name}`, narration:`Dark clouds roll over ${r.name}, and the path to ${g} winds straight through them. ${s} sniffs the wind and frowns.`,
+   options:[{e:'🌩️',label:'Press on through the storm',did:'pressed on through the storm'},{e:'🏕️',label:'Shelter and wait it out',did:'sheltered and waited out the storm'},{e:'🔭',label:`Use ${r.tool} to find a safe route`,did:`used ${r.tool} to hunt for a safe route`},{e:'🪨',label:'Dig in behind the rocks',did:'dug in behind the rocks'},{e:'🧭',label:'Backtrack to a gentler valley',did:'backtracked to a gentler valley'}]})},
+ {id:'bargain', make:(r,g,s) => ({title:`A Tempting Offer in ${r.name}`, narration:`A stranger in ${r.name} offers to help you find ${g}, but only on certain terms. ${s} says to read the fine print.`,
+   options:[{e:'🤝',label:'Accept the deal',did:'accepted the stranger’s deal'},{e:'💰',label:'Haggle for better terms',did:'haggled for better terms'},{e:'🙅',label:'Refuse and find your own way',did:'refused and found their own way'},{e:'🔍',label:'Ask to see the terms in writing',did:'asked to see the terms in writing'},{e:'🎲',label:'Propose a wager instead',did:'proposed a wager instead'}]})},
+ {id:'riddle', make:(r,g,s) => ({title:`A Riddle at ${r.name}`, narration:`${cap(r.beast)} won’t let you through until someone answers a riddle about ${g}. ${s} thinks they might know it.`,
+   options:[{e:'🗣️',label:'Answer boldly',did:'answered the riddle boldly'},{e:'❓',label:'Ask for a hint first',did:'asked for a hint first'},{e:'🔁',label:'Offer a riddle of your own',did:'offered a riddle of their own'},{e:'🤔',label:'Think quietly before answering',did:'thought quietly before answering'},{e:'📜',label:'Write the answer down and slide it over',did:'wrote the answer down and slid it over'}]})}
+];
+const FINALE = {id:'gate', make:(r,g,s) => ({title:'The Last Gate', narration:`At last ${g} glows behind a final gate, and the Gloom waits on the other side. ${s} steps forward first.`,
+  options:[{e:'🔑',label:'Speak the true name',did:'spoke the true name at the gate'},{e:'🔨',label:'Force the gate',did:'forced the gate'},{e:'🪞',label:'Distract the Gloom and slip through',did:'distracted the Gloom and slipped through'},{e:'🕯️',label:'Light the old lamp at the threshold',did:'lit the old lamp at the threshold'},{e:'🤝',label:'Step through together, hand in hand',did:'stepped through together, hand in hand'}]})};
+const QUESTS = [
+ {goal:'the Moonpetal Crown', title:'The Moonpetal Crown', premise:'The crown that keeps the kingdom’s nights gentle has been snatched by the Gloom, and the moon is growing dim.', win:'The Moonpetal Crown glows in your hands and the night turns soft and silver. The Gloom unravels like smoke.', lose:'The last petal falls and the Gloom swallows the moonlight. The tale ends in shadow.'},
+ {goal:'the Silver Key of Morning', title:'The Silver Key of Morning', premise:'The sun has forgotten how to rise, because the Gloom has hidden its silver key.', win:'You turn the Silver Key and dawn pours over the hills. The Gloom shrinks from the light.', lose:'The key slips away into the dark, and morning never quite arrives.'},
+ {goal:'the Singing Lantern', title:'The Singing Lantern', premise:'The kingdom’s last song is locked inside a lantern, and the Gloom is turning the whole land silent.', win:'The lantern bursts into song and every bell in the kingdom answers. The Gloom flees the music.', lose:'The lantern falls quiet for good, and the kingdom forgets its song.'},
+ {goal:'the Heartstone of the Hollow', title:'The Heartstone of the Hollow', premise:'The heart of the old forest has stopped beating, and the Gloom is creeping between the trees.', win:'The Heartstone thrums warm and the forest wakes with a sigh of leaves. The Gloom crumbles away.', lose:'The Heartstone cools to a plain grey pebble. The forest sleeps and does not wake.'},
+ {goal:'the Midnight Map', title:'The Midnight Map', premise:'The map that shows every road home has gone blank, and the Gloom is rolling the roads up one by one.', win:'The Midnight Map blazes with silver lines and every road lights up. The Gloom has nowhere left to hide.', lose:'The map fades to blank paper, and every road leads nowhere.'}
+];
+const HERO_STEPS = [
+  'Each chapter the Storyteller whispers a private hint to you. A strong hint is reliable. A faint hint only rules one path out. You tap to open it, and it is shown again when you vote.',
+  'Talk it over out loud. Share your hint, but remember the Villain knows the truth and may lie to you.',
+  'Vote in secret for the path you trust most. The most votes wins. If votes tie, the party dithers and takes the shaky path.',
+  'After the quest, the Storyteller reveals the truth of every chapter. Compare it with what each person told you, then vote for the Villain.'];
+const HERO_TIPS = [
+  'Heroes’ hints never contradict each other. If someone’s hint clashes with yours, they are the Villain.',
+  'The spotlight traveler of a chapter always gets a strong hint if they are a Hero. A spotlight traveler who only claims a faint one is lying.',
+  'After every vote the story shows how the chosen path really went. Use it to check who told the truth.',
+  'Unexplained misfortune means the Villain cast a shadow that chapter.'];
+const VIL_TIPS = [
+  'At the end the truth of every chapter is revealed, so any lie you told can be checked. A true but misleading statement is much safer than a lie.',
+  'Never contradict a hint you know a Hero holds. If you are in the spotlight, claim a strong hint.',
+  'In camera mode, 4 fingers flips your Shadow instead of voting for option 4, so tap when you want option 4 or 5. With three players only you ever raise 4 fingers, so keep your hand low and close to the camera, or just tap the switch.',
+  'You win fully only if the quest fails (Hope under 4) and the group does not name you. Winning just one of the two is a split verdict.'];
+const villainSteps = () => [
+  'Each chapter you learn the truth: which path is best, which is shaky, and which is the trap.',
+  'In the discussion, act like a Hero. Invent a hint, repeat a real one, or stay quiet.',
+  'Vote in secret. Push the group toward the trap or the shaky path, or vote safely now and then to look innocent. A tie makes the party dither onto the shaky path.',
+  `Optional: switch on a shadow when you vote. Tap the switch, or in camera mode hold up 4 fingers (hold 4 again to switch it off). You have ${G.tokens}. A shadow drains 1 extra Hope and shows up as misfortune, but never says who did it.`,
+  'After the quest the truth of every chapter is revealed. Then vote for someone else as the Villain.'];
+const REMIND = {
+  hero: {
+    whisper: ['Memorize your hint, then hide the screen.','A strong hint is reliable. A faint hint only rules one path out.','You choose whether to share it. Someone here may twist what they heard.'],
+    vote:    ['Vote for the path you trust most after hearing everyone.','If hints clashed, one speaker is lying. Who gains from it?','The most votes wins. If votes tie, the party dithers and takes the shaky path, so try to agree.'],
+    accuse:  ['You just saw the truth of every chapter. Whose claims did not match it?','Heroes never give a false hint. Anyone who did is the Villain.','Did a spotlight traveler claim only a faint hint? That is a lie if they were a Hero.']},
+  villain: {
+    whisper: ['You know which path is best, shaky and the trap.','Next, in the discussion, act like a Hero: invent a hint, repeat a real one, or stay quiet.','Mix in some truth so you stay believable.'],
+    vote:    ['Sink the quest: vote for the trap or the shaky path.','Or vote for the best path now and then to look innocent.','A shadow drains 1 extra Hope and shows as misfortune, never who did it. Tap the switch or hold 4 fingers. Save it for a chapter that would otherwise go well.','4 fingers flips your Shadow instead of voting for option 4. With three players only you raise 4, so tap the switch if anyone could be watching.'],
+    accuse:  ['Blend in: name someone else.','Point at anyone whose claims were wrong, or who stayed quiet, and give a reason.','You win fully if the quest failed and nobody names you.']}
+};
+const remind = (role, phase) => `<details class="remind"><summary>Remind me what to do</summary><ul>${REMIND[role][phase].map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>`;
+const GOOD = ['The plan works better than anyone dared hope.','Everything falls into place, and spirits rise.','A perfect stroke, and the way opens wide.'];
+const MIXED = ['It works, but not without a few scrapes and a lost snack.','You get through, a little shaken and a little worse for wear.','Not graceful, but you make it.'];
+
+/* =====================================================
+   Utilities and state
+   ===================================================== */
+const KEY = 'onceUponAJourney.v4';
+const MIN_PEOPLE = 3, MAX_PEOPLE = 6, WIN_HOPE = 4;
+/* Starting Hope is tuned by simulation: 3 players need a little more, and the setting shifts it. */
+const startHopeFor = (n, level) => Math.max(5, Math.min(10, (n >= 6 ? 7 : 8) + ({gentle:1, standard:0, cunning:-1}[level] || 0)));
+/* More players means more hints, so more paths keep it fair: 3, 4, or 5 paths. Kinds were tuned by simulation. */
+const pathCountFor = n => Math.min(5, Math.max(3, n));
+const KIND_SETS = {3:['good','mixed','trap'], 4:['good','mixed','mixed','trap'], 5:['good','mixed','mixed','trap','trap']};
+const randInt = n => {
+  try { const lim = Math.floor(4294967296 / n) * n, a = new Uint32Array(1); do { crypto.getRandomValues(a); } while (a[0] >= lim); return a[0] % n; }
+  catch (e) { return Math.floor(Math.random() * n); }
+};
+const DEFAULT_CHARS = ['mermaid','tinker','peter','aladdin'];
+const MOOD_FX = {love:'💖', happy:'✨', meh:'💭', sad:'💧'};
+const KIND_DELTA = {good:1, mixed:-1, trap:-3};
+
+const $app = document.getElementById('app');
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const joinNames = a => a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+const uid = () => Math.random().toString(36).slice(2, 9);
+
+const newPerson = charId => { const ch = charById(charId); return {id: uid(), charId: ch.id, name: ch.name, color: ch.bg}; };
+const freshState = () => ({people: DEFAULT_CHARS.map(newPerson), opts: {chapters: 4, guard: 'honor', villain: 'standard'}, view: 'home'});
+let S = load();
+let G = null;                     // game in progress
+let BUSY = {msg:'', sub:''};
+try { localStorage.removeItem('onceUponAJourney.ai.v1'); } catch (e) {}   // purge any API key saved by an older version
+
+function load() {
+  const base = freshState();
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if (s && Array.isArray(s.people) && s.people.length >= MIN_PEOPLE) {
+      base.people = s.people.slice(0, MAX_PEOPLE).map(p => { const ch = charById(p.charId); return {id: p.id || uid(), charId: ch.id, name: String(p.name || ch.name).slice(0, 20), color: ch.bg}; });
+      if (s.opts) base.opts = Object.assign(base.opts, s.opts);
+    }
+  } catch (e) {}
+  return base;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify({people:S.people, opts:S.opts})); } catch (e) {} }
+
+function toast(msg) {
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role','status'); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+}
+function smile(btn) {
+  const f = btn.querySelector('.face'); if (!f) return;
+  f.classList.remove('happy'); void f.getBoundingClientRect(); f.classList.add('happy');
+  setTimeout(() => f.classList.remove('happy'), 1100);
+}
+/* In-app confirmation: the browser's confirm() is blocked in many sandboxed viewers. */
+function confirmDialog(title, body, okLabel, keepLabel = 'Keep') {
+  return new Promise(resolve => {
+    const ov = document.createElement('div');
+    ov.className = 'overlay top';
+    ov.innerHTML = `<div class="sheet narrow" role="alertdialog" aria-modal="true" aria-labelledby="cdT" aria-describedby="cdB">
+      <h2 id="cdT">${esc(title)}</h2><p id="cdB" style="margin:10px 0 0">${esc(body)}</p>
+      <div class="sheet-actions"><button class="btn danger-solid" id="cdOk">${esc(okLabel)}</button><button class="btn" id="cdNo">${esc(keepLabel)}</button></div></div>`;
+    document.body.appendChild(ov);
+    const done = v => { document.removeEventListener('keydown', onKey, true); ov.remove(); resolve(v); };
+    const onKey = e => { if (e.key === 'Escape') { e.stopPropagation(); done(false); } };
+    document.addEventListener('keydown', onKey, true);
+    ov.onclick = e => { if (e.target === ov) done(false); };
+    ov.querySelector('#cdOk').onclick = () => done(true);
+    ov.querySelector('#cdNo').onclick = () => done(false);
+    ov.querySelector('#cdNo').focus();
+  });
+}
+
+/* =====================================================
+   Camera guard (computer vision, runs only on this device)
+   Detects: how many faces are looking at the screen, and
+   how many fingers a hand is holding up. It never identifies
+   anyone, and no frames are saved or sent anywhere.
+   ===================================================== */
+const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
+const FACE_MODEL = 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite';
+const HAND_MODEL = 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
+const CV = {state:'off', error:'', stream:null, video:null, face:null, hand:null, timer:null, wantHands:false, busy:false, errs:0, provider:null, subs:new Set(), last:{faces:0, fingers:null, t:0}};
+
+function camError(e) {
+  const n = e && e.name, msg = (e && e.message) || '';
+  if (n === 'NotAllowedError' || n === 'SecurityError') return 'Camera permission was blocked. Allow the camera for this page, or use Honor mode.';
+  if (n === 'NotFoundError' || n === 'OverconstrainedError') return 'No camera was found on this device.';
+  if (n === 'NotReadableError') return 'The camera is busy in another app.';
+  if (/import|fetch|network|load|wasm|module/i.test(msg)) return 'The camera guard couldn’t download its vision models. Check your internet connection (needed once), or use Honor mode.';
+  return msg || 'The camera guard couldn’t start.';
+}
+async function cvEnable() {
+  if (CV.state === 'ready') return true;
+  CV.state = 'loading'; CV.error = '';
+  try {
+    if (window.__cvProvider) CV.provider = window.__cvProvider;
+    else {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('This browser can’t open the camera here. Camera access needs a secure page (https) or a local file.');
+      CV.stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user', width:{ideal:640}, height:{ideal:480}}, audio:false});
+      const v = document.createElement('video');
+      v.muted = true; v.playsInline = true; v.autoplay = true; v.srcObject = CV.stream; v.setAttribute('aria-hidden', 'true');
+      v.style.cssText = 'position:fixed;left:0;bottom:0;width:80px;height:60px;opacity:.01;pointer-events:none;z-index:-1';
+      document.body.appendChild(v); CV.video = v;
+      await v.play().catch(() => {});
+      const vision = await import(MP + '/vision_bundle.mjs');
+      const fs = await vision.FilesetResolver.forVisionTasks(MP + '/wasm');
+      const make = async (Cls, path, extra) => {
+        for (const delegate of ['GPU', 'CPU']) {
+          try { return await Cls.createFromOptions(fs, Object.assign({baseOptions:{modelAssetPath:path, delegate}, runningMode:'VIDEO'}, extra)); }
+          catch (e) { if (delegate === 'CPU') throw e; }
+        }
+      };
+      CV.face = await make(vision.FaceDetector, FACE_MODEL, {minDetectionConfidence:0.5});
+      CV.hand = await make(vision.HandLandmarker, HAND_MODEL, {numHands:1, minHandDetectionConfidence:0.5});
+      CV.provider = mediapipeSample;
+    }
+    CV.state = 'ready'; CV.errs = 0;
+    clearInterval(CV.timer); CV.timer = setInterval(cvTick, 110);
+    return true;
+  } catch (e) { cvDisable(); CV.state = 'error'; CV.error = camError(e); return false; }
+}
+function cvDisable() {
+  clearInterval(CV.timer); CV.timer = null;
+  try { if (CV.stream) CV.stream.getTracks().forEach(t => t.stop()); } catch (e) {}
+  try { if (CV.face) CV.face.close(); if (CV.hand) CV.hand.close(); } catch (e) {}
+  if (CV.video) CV.video.remove();
+  CV.stream = CV.video = CV.face = CV.hand = CV.provider = null; CV.subs.clear(); CV.wantHands = false; CV.state = 'off';
+}
+function countFingers(lm) {
+  const d = (a, b) => Math.hypot(a.x - b.x, a.y - b.y), w = lm[0];
+  let n = 0;
+  [[8,6],[12,10],[16,14],[20,18]].forEach(([tip, pip]) => { if (d(lm[tip], w) > d(lm[pip], w) * 1.12) n++; });
+  return n;
+}
+/* A thumbs up: the four fingers curled, the thumb stretched out and pointing mostly upward */
+function isThumbsUp(lm) {
+  const d = (a, b) => Math.hypot(a.x - b.x, a.y - b.y), w = lm[0];
+  if (countFingers(lm) !== 0) return false;
+  const extended = d(lm[4], w) > d(lm[3], w) * 1.1 && d(lm[4], w) > d(lm[2], w) * 1.2;
+  const rise = lm[2].y - lm[4].y;                    // image y grows downward, so a raised thumb has the smaller y
+  return extended && rise > 0.06 && rise > Math.abs(lm[4].x - lm[2].x) * 0.9;
+}
+function mediapipeSample() {
+  const t = performance.now(), vw = CV.video.videoWidth || 640;
+  if (!CV.video.videoWidth) return {faces:[], fingers:null, thumbs:false};
+  const fr = CV.face.detectForVideo(CV.video, t);
+  const faces = (fr.detections || []).map(d => ({w: d.boundingBox.width / vw}));
+  let fingers = null, thumbs = false;
+  if (CV.wantHands) {
+    const hr = CV.hand.detectForVideo(CV.video, t);
+    if (hr.landmarks && hr.landmarks[0]) { fingers = countFingers(hr.landmarks[0]); thumbs = isThumbsUp(hr.landmarks[0]); }
+  }
+  return {faces, fingers, thumbs};
+}
+function cvTick() {
+  if (CV.state !== 'ready' || CV.busy || !CV.provider) return;
+  CV.busy = true;
+  try {
+    const r = CV.provider(CV.wantHands);
+    CV.last = {faces: (r.faces || []).filter(f => f.w >= 0.08).length, fingers: r.fingers == null ? null : r.fingers, thumbs: !!r.thumbs, t: performance.now()};
+    CV.errs = 0;
+    CV.subs.forEach(f => f(CV.last));
+  } catch (e) {
+    if (++CV.errs > 30) { cvDisable(); CV.state = 'error'; CV.error = 'The camera guard stopped working.'; if (G) { G.guard = 'honor'; toast('Camera guard stopped. Switched to Honor mode.'); } }
+  }
+  CV.busy = false;
+}
+const cvSub = fn => { CV.subs.add(fn); return () => CV.subs.delete(fn); };
+
+/* Turns raw frames into a steady verdict: clear / crowded / empty / pending */
+function makeGuard() {
+  let clearSince = 0, emptySince = 0, crowd = 0, state = 'pending';
+  return f => {
+    const t = f.t;
+    if (f.faces >= 2) { crowd++; clearSince = 0; emptySince = 0; }
+    else if (f.faces === 1) { crowd = 0; emptySince = 0; if (!clearSince) clearSince = t; }
+    else { crowd = 0; clearSince = 0; if (!emptySince) emptySince = t; }
+    let next = null;
+    if (crowd >= 2) next = 'crowded';
+    else if (f.faces === 0 && t - emptySince >= 1200) next = 'empty';
+    else if (f.faces === 1 && t - clearSince >= 700) next = 'clear';
+    else if (f.faces === 1 && state !== 'clear') next = 'pending';
+    if (next) state = next;
+    return state;
+  };
+}
+
+/* =====================================================
+   Home
+   ===================================================== */
+function render() {
+  if (S.view === 'busy') return renderBusy();
+  if (S.view === 'game') return;
+  renderHome();
+}
+
+function renderHome(notice) {
+  const n = S.people.length, g = S.opts.guard;
+  const camReady = CV.state === 'ready';
+  $app.innerHTML = `
+    <h1>Once Upon a Journey</h1>
+    <p class="lede">A cooperative fairytale for 3 to 6 players. Choose your characters, travel one tale together, and vote in secret at every turn. One of you is secretly the Villain.</p>
+    ${notice ? `<div class="banner err" role="alert">${esc(notice)}</div>` : ''}
+    <div class="grid ${n > 4 ? 'many' : ''}">
+      ${S.people.map(p => `
+        <div class="card">
+          ${n > MIN_PEOPLE ? `<button class="x" data-remove="${p.id}" aria-label="Remove ${esc(p.name)} from the group" title="Remove ${esc(p.name)}">×</button>` : ''}
+          <button class="face-btn" data-smile aria-label="Make ${esc(p.name)} smile">${avatar(charById(p.charId))}</button>
+          <div class="pname">${esc(p.name)}</div>
+          <button class="btn small ghost" data-edit="${p.id}">Edit</button>
+        </div>`).join('')}
+    </div>
+    ${n < MAX_PEOPLE ? `<div class="add"><button class="btn small ghost" id="addPerson">+ Add a traveler</button></div>` : ''}
+    ${n <= MIN_PEOPLE ? `<p class="min-note">You can play with as few as ${MIN_PEOPLE}.</p>` : ''}
+
+    <section class="sect" aria-labelledby="lenT">
+      <h2 id="lenT">How long is the tale?</h2>
+      <div class="minis" id="lenCards">${[[3,'🌙','Short','3 chapters'],[4,'🌤️','Standard','4 chapters'],[5,'🌅','Epic','5 chapters']].map(([k,e,t,s]) =>
+        `<button class="mini" data-k="${k}" aria-pressed="${S.opts.chapters === k}"><span class="me">${e}</span><b>${t}</b>${s}</button>`).join('')}</div>
+    </section>
+
+    <section class="sect" aria-labelledby="vcT">
+      <h2 id="vcT">How cunning is the Villain?</h2>
+      <p class="hint" id="vcHint">Starting Hope: <b>${startHopeFor(n, S.opts.villain)}</b>. Heroes need ${WIN_HOPE} or more at the end to win the quest.</p>
+      <div class="minis" id="vilCards">${[['gentle','🐣','Gentle','Heroes start with more Hope'],['standard','🦊','Standard','Balanced for first games'],['cunning','🐍','Cunning','Less Hope. For veterans']].map(([k,e,t,sb]) =>
+        `<button class="mini" data-k="${k}" aria-pressed="${S.opts.villain === k}"><span class="me">${e}</span><b>${t}</b>${sb}</button>`).join('')}</div>
+    </section>
+
+    <section class="sect" aria-labelledby="gdT">
+      <h2 id="gdT">Keeping votes secret</h2>
+      <p class="hint">The phone gets passed around. Pick how you’ll make sure nobody peeks.</p>
+      <div class="minis two" id="guardCards">
+        <button class="mini" data-k="honor" aria-pressed="${g === 'honor'}"><span class="me">🙈</span><b>Honor mode</b>Cover the screen yourselves</button>
+        <button class="mini" data-k="camera" aria-pressed="${g === 'camera'}"><span class="me">📷</span><b>Camera guard</b>The camera checks nobody peeks, reads finger votes, and a thumbs up moves on</button>
+      </div>
+      <p class="camline" id="camLine" role="status">${
+        g !== 'camera' ? '' :
+        camReady ? '✓ Camera guard is ready. It counts faces and fingers only. Nothing is recorded or sent.' :
+        CV.state === 'loading' ? 'Starting the camera guard…' :
+        CV.state === 'error' ? esc(CV.error) :
+        'The camera starts when you begin the tale (your browser will ask permission). It needs an internet connection the first time.'}</p>
+    </section>
+
+    <details class="more">
+      <summary>How to play</summary>
+      <h3>The idea</h3>
+      <p>You travel one fairytale together. Everyone is a Hero except one secret Villain. Hope starts at ${startHopeFor(n, S.opts.villain)} (see the Villain’s cunning above). If you finish with ${WIN_HOPE} or more, you win the quest. Then everyone votes on who the Villain was.</p>
+      <h3>Every chapter</h3>
+      <ol>
+        <li>The Storyteller sets a challenge with as many paths as there are players (3 to 5): some good, some shaky, some traps.</li>
+        <li>Each player gets a private whisper in turn. Pass the phone, then tap to reveal it. Your whisper is shown again when you vote.</li>
+        <li>Everyone puts the phone down and talks it over out loud, for as long as they like.</li>
+        <li>Everyone votes in secret. The most votes wins. If votes tie, the party dithers and takes the shaky path.</li>
+        <li>The story shows what happened. Good raises Hope, shaky lowers it, traps hurt.</li>
+      </ol>
+      <h3 class="heroh">If you’re a Hero 🛡️</h3>
+      <ul>
+        <li><b>Goal:</b> finish the quest and unmask the Villain.</li>
+        <li>Your whisper is a true hint. A strong hint is reliable. A faint hint only rules one path out.</li>
+        <li>Heroes’ hints never clash. If someone’s hint clashes with yours, they are the Villain.</li>
+        <li>The spotlight traveler always gets a strong hint if they’re a Hero. A spotlight traveler who claims only a faint one is lying.</li>
+        <li>Unexplained misfortune means the Villain cast a shadow that chapter.</li>
+      </ul>
+      <h3 class="vilh">If you’re the Villain 🗡️</h3>
+      <ul>
+        <li><b>Goal:</b> sink the quest (Hope under ${WIN_HOPE}) and never get named.</li>
+        <li>Your whisper is the full truth. Heroes only get hints.</li>
+        <li>In discussion, act like a Hero. Invent a hint, repeat a real one, or stay quiet. True but misleading statements are safer than lies.</li>
+        <li>Vote for the trap or the shaky path, or vote safely sometimes to look innocent.</li>
+        <li>You hold shadow tokens (2, or 3 with 6 players). Switch one on when you vote, by tapping or holding up 4 fingers. It drains 1 extra Hope and shows as misfortune, but never who did it.</li>
+      </ul>
+      <h3>Camera guard hand signs</h3>
+      <ul>
+        <li>Hold up 1 to 4 fingers for a second and a half to vote for that option. Your options are shuffled just for you. With five paths, the fifth is chosen by tapping.</li>
+        <li>Villain only: hold up 4 fingers to switch your Shadow on or off, instead of voting for option 4 (tap to choose option 4 or 5). With four or more players, Heroes also raise 4 fingers to vote for their fourth option, so your sign blends in. With three players it gives you away, so tap the switch if others might be watching.</li>
+        <li>Hold a thumbs up for two seconds to move on. It does not work on the discussion screens, where you tap the button. Let go and the timer starts over.</li>
+      </ul>
+      <h3>How it ends</h3>
+      <p>The Storyteller reveals the truth of every chapter, so lies can be checked. Then everyone names a suspect (if suspects tie, fate picks one). Heroes win by finishing the quest <i>and</i> naming the Villain. The Villain wins by sinking the quest <i>and</i> staying hidden. Win one goal each and it’s a split verdict.</p>
+    </details>
+
+    <div class="actions">
+      <button class="btn primary" id="begin">Begin the tale ✨</button>
+    </div>
+
+    <footer>
+      <p><strong>Private by design.</strong> Your cast is saved only on this device and nothing is sent anywhere. The camera guard runs on this device and never records or uploads images. It downloads its vision models once, the first time you use it.</p>
+      <div class="row"><button class="btn small ghost danger" id="reset">Clear all data</button></div>
+    </footer>`;
+
+  $app.querySelectorAll('[data-smile]').forEach(b => b.onclick = () => smile(b));
+  $app.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openSheet(b.dataset.edit));
+  $app.querySelectorAll('[data-remove]').forEach(b => b.onclick = () => removePerson(b.dataset.remove));
+  const add = $('addPerson');
+  if (add) add.onclick = () => { const used = S.people.map(p => p.charId); openSheet(null, newPerson(CHARS.find(c => !used.includes(c.id)).id)); };
+  $('lenCards').onclick = e => {
+    const b = e.target.closest('.mini'); if (!b) return;
+    S.opts.chapters = +b.dataset.k; save();
+    document.querySelectorAll('#lenCards .mini').forEach(c => c.setAttribute('aria-pressed', c === b));
+  };
+  $('vilCards').onclick = e => {
+    const b = e.target.closest('.mini'); if (!b) return;
+    S.opts.villain = b.dataset.k; save();
+    document.querySelectorAll('#vilCards .mini').forEach(c => c.setAttribute('aria-pressed', c === b));
+    $('vcHint').innerHTML = `Starting Hope: <b>${startHopeFor(S.people.length, S.opts.villain)}</b>. Heroes need ${WIN_HOPE} or more at the end to win the quest.`;
+  };
+  $('guardCards').onclick = e => {
+    const b = e.target.closest('.mini'); if (!b) return;
+    S.opts.guard = b.dataset.k; save();
+    if (S.opts.guard === 'honor') cvDisable();
+    renderHome();
+  };
+  $('begin').onclick = beginTale;
+  $('reset').onclick = async () => {
+    if (await confirmDialog('Clear all data?', 'This resets your cast and settings on this device.', 'Clear everything')) {
+      cvDisable(); S = freshState(); save(); renderHome(); toast('All data cleared');
+    }
+  };
+}
+
+async function removePerson(id) {
+  const p = S.people.find(x => x.id === id);
+  if (!p || S.people.length <= MIN_PEOPLE) return;
+  if (await confirmDialog('Remove ' + p.name + '?', 'They’ll leave the cast.', 'Remove')) {
+    S.people = S.people.filter(x => x.id !== id); save(); render(); toast(p.name + ' removed');
+  }
+}
+
+function openSheet(id, brandNew) {
+  const isNew = !!brandNew;
+  const draft = JSON.parse(JSON.stringify(brandNew || S.people.find(p => p.id === id)));
+  const usedByOthers = S.people.filter(p => p.id !== draft.id).map(p => p.charId);
+  const ov = document.createElement('div');
+  ov.className = 'overlay';
+  ov.innerHTML = `
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <header><button class="face-btn" id="sheetFace" aria-label="Make them smile"></button>
+      <div><h2 id="sheetTitle">${isNew ? 'New traveler' : 'Edit traveler'}</h2><p class="src" id="srcLine"></p></div></header>
+    <div class="field"><span class="lbl">Pick a storybook character</span>
+      <div class="picker" id="picker">${CHARS.map(c => `
+        <button class="pick" data-id="${c.id}" ${usedByOthers.includes(c.id) ? 'disabled title="Already in the cast"' : ''} aria-pressed="${c.id === draft.charId}">
+          <div class="pv">${avatar(c)}</div>${esc(c.name)}</button>`).join('')}</div></div>
+    <div class="field"><label for="nm">Name</label><input type="text" id="nm" maxlength="20" value="${esc(draft.name)}" autocomplete="off"></div>
+    <div class="sheet-actions">
+      <button class="btn primary" id="saveP">${isNew ? 'Add traveler' : 'Save'}</button>
+      <button class="btn" id="cancelP">Cancel</button>
+      ${!isNew && S.people.length > MIN_PEOPLE ? `<button class="btn danger" id="delP">Remove from cast</button>` : ''}
+    </div></div>`;
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  const q = s => ov.querySelector(s);
+  const paint = () => { const ch = charById(draft.charId); q('#sheetFace').innerHTML = avatar(ch); q('#srcLine').textContent = 'From the tale by ' + ch.src; };
+  paint();
+  q('#sheetFace').onclick = e => smile(e.currentTarget);
+  q('#picker').onclick = e => {
+    const b = e.target.closest('.pick'); if (!b || b.disabled) return;
+    const prev = charById(draft.charId), next = charById(b.dataset.id);
+    if (!draft.name.trim() || draft.name === prev.name) { draft.name = next.name; q('#nm').value = next.name; }
+    draft.charId = next.id; draft.color = next.bg;
+    q('#picker').querySelectorAll('.pick').forEach(x => x.setAttribute('aria-pressed', x === b));
+    paint();
+  };
+  q('#nm').oninput = e => draft.name = e.target.value;
+  const close = () => { ov.remove(); document.body.style.overflow = ''; document.removeEventListener('keydown', onKey); };
+  const onKey = e => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  ov.onclick = e => { if (e.target === ov) close(); };
+  q('#cancelP').onclick = close;
+  q('#saveP').onclick = () => {
+    draft.name = draft.name.trim() || charById(draft.charId).name;
+    if (isNew) S.people.push(draft); else S.people = S.people.map(p => p.id === draft.id ? draft : p);
+    save(); close(); render();
+  };
+  const del = q('#delP');
+  if (del) del.onclick = async () => { const pid = draft.id; close(); await removePerson(pid); };
+  q('#nm').focus();
+}
+
+/* =====================================================
+   Story: built-in storyteller
+   ===================================================== */
+function buildBuiltinStory(players, n) {
+  const q = pick(QUESTS), order = shuffle(players), archs = shuffle(ARCH);
+  const chapters = [];
+  for (let i = 0; i < n; i++) {
+    const spot = order[i % order.length], realm = REALMS[spot.charId], last = i === n - 1;
+    const arch = last ? FINALE : archs[i % archs.length], base = arch.make(realm, q.goal, spot.name);
+    const K = pathCountFor(players.length), kinds = shuffle(KIND_SETS[K]);
+    chapters.push({
+      title: base.title, scene: realm.scene, challenge: arch.id, spotId: spot.id, narration: base.narration,
+      options: base.options.slice(0, K).map((o, k) => ({label: o.label, emoji: o.e, kind: kinds[k],
+        result: `The party ${o.did}. ` + (kinds[k] === 'good' ? pick(GOOD) : kinds[k] === 'mixed' ? pick(MIXED) : 'It was a trap! ' + realm.trap)}))
+    });
+  }
+  return {title: q.title, goal: q.goal, premise: `${q.premise} ${joinNames(players.map(p => p.name))} set out together to bring it home.`, win: q.win, lose: q.lose, chapters, source:'builtin'};
+}
+
+/* =====================================================
+   Starting a game
+   ===================================================== */
+function renderBusy() {
+  $app.innerHTML = `<div class="loading" role="status"><div class="spin"></div><h2>${esc(BUSY.msg || 'One moment…')}</h2>
+    <p class="lede" style="margin:10px auto 18px">${esc(BUSY.sub || '')}</p><button class="btn small" id="cancel">Cancel</button></div>`;
+  $('cancel').onclick = () => { S.view = 'home'; render(); };
+}
+
+async function beginTale() {
+  const camP = S.opts.guard === 'camera' && CV.state !== 'ready' ? cvEnable() : null;     // must start inside the tap
+  let notice = '';
+  if (camP) {
+    S.view = 'busy'; BUSY = {msg:'Starting the camera guard…', sub:'Allow the camera when your browser asks.'}; renderBusy();
+    const ok = await camP;
+    if (!ok) { notice = CV.error + ' Switched to Honor mode.'; S.opts.guard = 'honor'; save(); }
+    if (S.view !== 'busy') return;
+  }
+  const players = S.people.map(p => ({id:p.id, charId:p.charId, name:p.name, color:p.color, role:'hero'}));
+  startGame(players, buildBuiltinStory(players, S.opts.chapters), notice);
+}
+
+/* =====================================================
+   Game engine
+   ===================================================== */
+function startGame(players, story, notice) {
+  const vi = randInt(players.length);
+  players[vi].role = 'villain';
+  G = {players, villainId: players[vi].id, story, hope: startHopeFor(players.length, S.opts.villain), tokens: players.length >= 6 ? 3 : 2,
+    votes: {}, cursed: {}, results: [], accuse: {}, steps: [], si: 0, timers: [], ints: [],
+    guard: (CV.state === 'ready' && S.opts.guard === 'camera') ? 'camera' : 'honor', label: 'Prologue', pendingNotice: notice};
+  G.clues = story.chapters.map(ch => makeClues(ch));
+  G.steps = [...players.map(p => ({k:'role', pid:p.id})), {k:'intro'}, ...chapterSteps(0)];
+  S.view = 'game';
+  runStep();
+}
+function rotate(ci) { const n = G.players.length, s = ci % n; return G.players.slice(s).concat(G.players.slice(0, s)); }
+function chapterSteps(ci) {
+  const order = rotate(ci);
+  return [{k:'chapter', ci}, ...order.map(p => ({k:'whisper', ci, pid:p.id})), {k:'discuss', ci}, ...order.map(p => ({k:'vote', ci, pid:p.id})), {k:'result', ci}];
+}
+function finaleSteps() {
+  return [{k:'finale'}, {k:'truth'}, {k:'discuss', accuse:true}, ...G.players.map(p => ({k:'accuse', pid:p.id})), {k:'accuseReveal'}, {k:'ending'}];
+}
+function makeClues(ch) {
+  const kinds = ch.options.map(o => o.kind), all = k => kinds.map((x, i) => x === k ? i : -1).filter(i => i >= 0);
+  const goods = all('good'), traps = all('trap'), safe = shuffle(kinds.map((x, i) => x !== 'trap' ? i : -1).filter(i => i >= 0));
+  const lab = i => ch.options[i].label;
+  const heroes = G.players.filter(p => p.role === 'hero');
+  let wi = 0; const clues = {};
+  heroes.forEach(h => {
+    if (h.id === ch.spotId) clues[h.id] = Math.random() < .5
+      ? {strong:true, text:`Beware “${lab(pick(traps))}”. That way is a trap.`}
+      : {strong:true, text:`“${lab(pick(goods))}” is the wisest path.`};
+    else clues[h.id] = {strong:false, text:`“${lab(safe[wi++ % safe.length])}” will not doom you.`};
+  });
+  return clues;
+}
+const P = id => G.players.find(p => p.id === id);
+function later(fn, ms) { const t = setTimeout(fn, ms); G.timers.push(t); return t; }
+function clearTimers() { if (!G) return; G.timers.forEach(clearTimeout); G.ints.forEach(clearInterval); G.timers = []; G.ints = []; disarmThumb(); }
+
+/* Thumbs up moves on: hold one to the camera and the screen's main button is pressed for you. */
+const THUMB_HOLD = 2000;            // ms of an unbroken thumbs up needed to move on (the discussion screen asks for more)
+const THUMB_TARGETS = '#go, #okRole, #okW, #passOn, #lockV';
+function thumbTarget() {
+  const el = document.querySelector(THUMB_TARGETS);
+  if (!el || el.disabled || el.offsetParent === null) return null;               // missing, disabled or hidden (e.g. peek cover)
+  if (el.dataset.nothumb) return null;                                           // discussion screens: tap the button instead
+  const fading = el.closest('.later');
+  if (fading && parseFloat(getComputedStyle(fading).opacity) < .95) return null;   // not shown yet
+  return el;
+}
+function ensureThumbHint(btn) {
+  const old = $('thumbhint');
+  if (old && old.dataset.for === btn.id) return;
+  if (old) old.remove();
+  const secs = (+btn.dataset.hold || THUMB_HOLD) / 1000;
+  (btn.closest('.actions') || btn).insertAdjacentHTML('afterend',
+    `<div class="thumbhint" id="thumbhint" data-for="${btn.id}">👍 Or hold a thumbs up to the camera for ${secs} seconds ${btn.id === 'lockV' ? 'to lock in' : 'to continue'}.<div class="fbar"><i id="tprog"></i></div></div>`);
+}
+function disarmThumb() { if (G && G.thumbUnsub) { G.thumbUnsub(); G.thumbUnsub = null; } CV.wantHands = false; }
+function armThumb() {
+  disarmThumb();
+  if (!G || G.guard !== 'camera' || CV.state !== 'ready') return;
+  CV.wantHands = true;
+  let start = 0, cool = 0;
+  G.thumbUnsub = cvSub(f => {
+    const btn = thumbTarget(); if (!btn) { start = 0; return; }
+    ensureThumbHint(btn);
+    const bar = $('tprog');
+    if (!f.thumbs || f.t < cool) { start = 0; if (bar) bar.style.width = '0'; return; }
+    if (!start) start = f.t;
+    const pr = Math.min(1, (f.t - start) / (+btn.dataset.hold || THUMB_HOLD));
+    if (bar) bar.style.width = (pr * 100) + '%';
+    if (pr >= 1) { start = 0; cool = f.t + 1500; btn.click(); }
+  });
+}
+function runStep() {
+  clearTimers();
+  const s = G.steps[G.si]; if (!s) return;
+  dispatchStep(s);
+  armThumb();
+}
+function dispatchStep(s) {
+  switch (s.k) {
+    case 'role':    return privateTurn(P(s.pid), 'for your secret role', buildRole);
+    case 'intro':   return screenIntro();
+    case 'chapter': return screenChapter(s.ci);
+    case 'whisper': return privateTurn(P(s.pid), 'for a private whisper', (box, done, p) => buildWhisper(box, done, p, s.ci));
+    case 'discuss': return screenDiscuss(s);
+    case 'vote':    return privateTurn(P(s.pid), 'to cast your secret vote', (box, done, p) => buildVote(box, done, p, s.ci));
+    case 'result':  return screenResult(s.ci);
+    case 'finale':  return screenFinale();
+    case 'truth':   return screenTruth();
+    case 'accuse':  return privateTurn(P(s.pid), 'to name the Villain', buildAccuse);
+    case 'accuseReveal': return screenAccuseReveal();
+    case 'ending':  return screenEnding();
+  }
+}
+function advance() {
+  const prev = G.steps[G.si]; G.si++;
+  if (prev && prev.k === 'result') {
+    const N = G.story.chapters.length;
+    if (G.hope <= 0 || prev.ci >= N - 1) G.steps.push(...finaleSteps()); else G.steps.push(...chapterSteps(prev.ci + 1));
+  }
+  runStep();
+}
+function leaveGame() {
+  clearTimers(); G = null; cvDisable(); S.view = 'home'; renderHome(); window.scrollTo(0, 0);
+}
+function resolveChapter(ci) {
+  if (G.results[ci]) return;
+  const votes = G.votes[ci] || {}, ch = G.story.chapters[ci], counts = ch.options.map(() => 0);
+  Object.values(votes).forEach(i => counts[i]++);
+  const max = Math.max(...counts), tied = counts.map((c, i) => c === max ? i : -1).filter(i => i >= 0);
+  const dithered = tied.length > 1;                       // a tie: the party argues in circles and takes the shaky way
+  const win = dithered ? null : tied[0];
+  const kind = dithered ? 'mixed' : ch.options[win].kind, cursed = !!G.cursed[ci], before = G.hope;
+  G.hope = Math.max(0, Math.min(10, G.hope + KIND_DELTA[kind] - (cursed ? 1 : 0)));
+  G.results[ci] = {counts, win, kind, cursed, before, after: G.hope, dithered};
+}
+
+/* ---------- HUD and stage ---------- */
+function hudHTML(h = G.hope) {
+  return `<div class="hud"><button class="btn small ghost" id="quitG">✕ Quit</button>
+    <div class="hud-mid"><span class="hl">${esc(G.label)}</span><div class="hope" id="hope" role="img" aria-label="Hope ${h} of 10">${Array.from({length:10}, (_, i) => `<i class="${i < h ? 'on' : ''}"></i>`).join('')}</div></div>
+    ${G.guard === 'camera' ? `<button class="cam" id="camChip" title="Camera guard is on. Tap to turn it off.">📷 Guard on</button>` : `<span class="chip-soft">🙈 Honor mode</span>`}</div>`;
+}
+function setHope(h) { document.querySelectorAll('#hope i').forEach((el, i) => el.classList.toggle('on', i < h)); const hp = $('hope'); if (hp) hp.setAttribute('aria-label', `Hope ${h} of 10`); }
+function wireHud() {
+  const q = $('quitG');
+  if (q) q.onclick = async () => { if (await confirmDialog('Quit this game?', 'The tale and everyone’s secret roles will be lost.', 'Quit', 'Keep playing')) leaveGame(); };
+  const c = $('camChip');
+  if (c) c.onclick = async () => {
+    if (await confirmDialog('Turn off the camera guard?', 'You’ll switch to Honor mode for the rest of this game. Everyone must cover the screen themselves.', 'Turn off', 'Keep it on')) {
+      cvDisable(); G.guard = 'honor'; S.opts.guard = 'honor'; save(); runStep();
+    }
+  };
+}
+function backdrop(scene) {
+  const W = '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  const stars = [[40,30],[90,70],[150,25],[210,60],[270,30],[330,75],[370,35],[120,110],[300,120],[60,120]]
+    .map(([x,y],i) => `<circle cx="${x}" cy="${y}" r="${i % 3 ? 1.4 : 2.2}" fill="#fff" opacity=".85"/>`).join('');
+  switch (scene) {
+    case 'indoor': return W + `<rect width="400" height="300" fill="#f1d7b0"/><rect y="196" width="400" height="104" fill="#c9976a"/><rect y="192" width="400" height="8" fill="#a97347"/><rect x="40" y="36" width="110" height="90" rx="6" fill="#bfe3f5" stroke="#8a5a2b" stroke-width="6"/><path d="M95 36V126M40 81H150" stroke="#8a5a2b" stroke-width="4"/><path d="M30 30Q50 90 30 142H52Q62 90 52 30Z" fill="#c8553d"/><path d="M160 30Q140 90 160 142H138Q128 90 138 30Z" fill="#c8553d"/><rect x="250" y="46" width="76" height="56" rx="4" fill="#f7efe0" stroke="#8a5a2b" stroke-width="5"/><circle cx="288" cy="74" r="13" fill="#e8a44a"/><ellipse cx="200" cy="254" rx="130" ry="24" fill="#a2425a"/><ellipse cx="200" cy="254" rx="98" ry="16" fill="#c8627a"/><rect x="346" y="118" width="8" height="80" fill="#8a5a2b"/><circle cx="350" cy="110" r="17" fill="#ffe08a"/></svg>`;
+    case 'water': return W + `<defs><linearGradient id="bdWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3ef"/><stop offset="1" stop-color="#e9f6f3"/></linearGradient></defs><rect width="400" height="300" fill="url(#bdWater)"/><circle cx="320" cy="62" r="26" fill="#ffd66b"/><g class="cloud"><ellipse cx="80" cy="48" rx="32" ry="12" fill="#fff" opacity=".9"/><ellipse cx="104" cy="42" rx="20" ry="10" fill="#fff" opacity=".9"/></g><path d="M0 150Q50 138 100 150T200 150T300 150T400 150V300H0Z" fill="#4fb3c8"/><path d="M0 190Q50 178 100 190T200 190T300 190T400 190V300H0Z" fill="#2f93ad"/><path d="M0 232Q60 220 120 232T240 232T360 232T480 232V300H0Z" fill="#237a96"/><path d="M230 148L230 108L262 148Z" fill="#fff"/><path d="M226 150H268L260 158H234Z" fill="#8a5a2b"/></svg>`;
+    case 'night': return W + `<defs><linearGradient id="bdNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111d3a"/><stop offset="1" stop-color="#3b4c88"/></linearGradient></defs><rect width="400" height="300" fill="url(#bdNight)"/>${stars}<circle cx="330" cy="58" r="24" fill="#fff4c7"/><circle cx="340" cy="52" r="21" fill="#17254a" opacity=".55"/><path d="M0 200Q90 150 190 196T400 180V300H0Z" fill="#1b2a56"/><path d="M0 232Q120 190 250 228T400 220V300H0Z" fill="#14204a"/><circle cx="70" cy="196" r="2.4" fill="#ffe27a"/><circle cx="130" cy="214" r="2" fill="#ffe27a"/><circle cx="300" cy="206" r="2.4" fill="#ffe27a"/></svg>`;
+    case 'show': {
+      const bulbs = Array.from({length:14}, (_, i) => `<circle class="bulb" cx="${20 + i * 28}" cy="16" r="4.5" fill="#ffd66b" style="animation-delay:${(i % 2) * .5}s"/>`).join('');
+      return W + `<defs><linearGradient id="bdShow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1646"/><stop offset="1" stop-color="#5a2a7a"/></linearGradient><linearGradient id="bdBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="400" height="300" fill="url(#bdShow)"/><path d="M200 0L100 262H300Z" fill="url(#bdBeam)"/><path d="M0 0H70Q40 100 60 300H0Z" fill="#a8243a"/><path d="M400 0H330Q360 100 340 300H400Z" fill="#a8243a"/><rect y="252" width="400" height="48" fill="#3b1d57"/><ellipse cx="200" cy="264" rx="120" ry="14" fill="#fff" opacity=".18"/>${bulbs}</svg>`;
+    }
+    default: return W + `<defs><linearGradient id="bdOut" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd8f0"/><stop offset="1" stop-color="#e8f6e0"/></linearGradient></defs><rect width="400" height="300" fill="url(#bdOut)"/><circle cx="330" cy="58" r="24" fill="#ffd66b"/><g class="cloud"><ellipse cx="74" cy="52" rx="32" ry="12" fill="#fff" opacity=".9"/><ellipse cx="98" cy="46" rx="20" ry="10" fill="#fff" opacity=".9"/></g><path d="M0 190Q90 140 190 185T400 170V300H0Z" fill="#8fcf95"/><path d="M0 225Q120 178 250 220T400 208V300H0Z" fill="#6bb87a"/><g fill="#3f8f4a"><path d="M34 214l16-46 16 46z"/><path d="M60 218l12-34 12 34z"/><path d="M330 208l16-46 16 46z"/></g><g fill="#7a5230"><rect x="46" y="214" width="8" height="12"/><rect x="338" y="208" width="8" height="12"/></g></svg>`;
+  }
+}
+function challengeArt(kind, scene) {
+  const W = '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  let g = '';
+  if (kind === 'crossing' && scene === 'water') {
+    g = [[150,150,0],[205,130,.4],[256,152,.8]].map(([x,y,d]) => `<g class="floaty" style="animation-delay:${d}s"><ellipse cx="${x}" cy="${y}" rx="30" ry="9" fill="#6f7f8c"/><ellipse cx="${x}" cy="${y-4}" rx="26" ry="7" fill="#a3b4bf"/></g><ellipse class="ripple" cx="${x}" cy="${y+4}" rx="38" ry="8" fill="none" stroke="#fff" stroke-width="2"/>`).join('')
+      + `<path d="M118 172q10-8 20 0t20 0" fill="none" stroke="#fff" stroke-width="2" opacity=".6"/>`;
+  } else if (kind === 'crossing') {
+    const planks = Array.from({length:9}, (_, i) => { const t = (i + .5) / 9, x = 154 + t * 92, y = 120 + 36 * t * (1 - t); return `<rect x="${x - 5}" y="${y + 1}" width="10" height="5" rx="1" fill="#a8743c" stroke="#6b4a2a" stroke-width=".8"/>`; }).join('');
+    g = `<path d="M92 118h62v78H92z" fill="#8a6a4a"/><path d="M92 118h62v10H92z" fill="#5fa86a"/><path d="M246 118h62v78h-62z" fill="#8a6a4a"/><path d="M246 118h62v10h-62z" fill="#5fa86a"/>
+      <rect x="154" y="128" width="92" height="68" fill="#2b2238" opacity=".9"/><g class="cloud"><ellipse cx="190" cy="170" rx="30" ry="9" fill="#fff" opacity=".28"/><ellipse cx="226" cy="182" rx="26" ry="8" fill="#fff" opacity=".22"/></g>
+      <g class="sway"><path d="M154 120Q200 156 246 120" fill="none" stroke="#6b4a2a" stroke-width="3"/><path d="M154 110Q200 146 246 110" fill="none" stroke="#6b4a2a" stroke-width="2"/>${planks}</g>`;
+  } else if (kind === 'guardian') {
+    g = `<g class="floaty"><path d="M150 192Q140 122 200 110Q260 122 250 192Z" fill="#5b4a7a"/><ellipse cx="200" cy="170" rx="30" ry="24" fill="#7a6a9a"/>
+      <ellipse cx="146" cy="152" rx="14" ry="22" fill="#5b4a7a" transform="rotate(14 146 152)"/><ellipse cx="254" cy="152" rx="14" ry="22" fill="#5b4a7a" transform="rotate(-14 254 152)"/>
+      <rect x="258" y="100" width="12" height="76" rx="5" fill="#8a5a2b" transform="rotate(12 264 138)"/>
+      <circle cx="200" cy="100" r="30" fill="#6a5a8a"/><path d="M176 80L166 54L192 72ZM224 80L234 54L208 72Z" fill="#e8d8a8"/>
+      <g class="eye"><circle cx="188" cy="98" r="7" fill="#ffe27a"/><circle cx="212" cy="98" r="7" fill="#ffe27a"/><circle cx="188" cy="99" r="3" fill="#2a1646"/><circle cx="212" cy="99" r="3" fill="#2a1646"/></g>
+      <path d="M178 88L196 94M222 88L204 94" stroke="#2a1646" stroke-width="4" stroke-linecap="round"/>
+      <path d="M186 116Q200 128 214 116Z" fill="#2a1646"/><path d="M191 117l3 7 3-7M203 117l3 7 3-7" fill="#fff"/></g>`;
+  } else if (kind === 'storm') {
+    const rain = Array.from({length:14}, (_, i) => `<line x1="${124 + i * 11}" y1="108" x2="${120 + i * 11}" y2="120" style="animation-delay:${(i * .13).toFixed(2)}s"/>`).join('');
+    g = `<g class="cloud"><ellipse cx="158" cy="90" rx="46" ry="20" fill="#4a5570"/><ellipse cx="204" cy="78" rx="52" ry="25" fill="#3d4760"/><ellipse cx="250" cy="92" rx="42" ry="19" fill="#4a5570"/></g>
+      <polygon class="bolt" points="210,100 192,140 207,140 195,176 228,128 211,128 222,100" fill="#ffe27a"/>
+      <g class="rain" stroke="#bfe3ff" stroke-width="2.4" stroke-linecap="round">${rain}</g>`;
+  } else if (kind === 'bargain') {
+    g = `<g class="floaty"><path d="M168 192Q164 128 200 112Q236 128 232 192Z" fill="#1f5f66"/><path d="M176 126Q200 94 224 126Q214 112 200 112Q186 112 176 126Z" fill="#164a50"/><ellipse cx="200" cy="130" rx="16" ry="14" fill="#0f2f33"/>
+      <circle class="twinkle" cx="194" cy="129" r="2.6" fill="#ffe27a"/><circle class="twinkle" cx="206" cy="129" r="2.6" fill="#ffe27a"/>
+      <line x1="176" y1="152" x2="150" y2="142" stroke="#164a50" stroke-width="8" stroke-linecap="round"/><circle class="pulse" cx="146" cy="152" r="15" fill="#ffd66b" opacity=".4"/><rect x="140" y="144" width="12" height="16" rx="3" fill="#e8b22b"/>
+      <line x1="224" y1="154" x2="250" y2="148" stroke="#164a50" stroke-width="8" stroke-linecap="round"/><rect x="246" y="132" width="34" height="26" rx="4" fill="#f5ecd2" stroke="#c9ad66"/><path d="M252 140h22M252 146h22M252 152h14" stroke="#b49a86" stroke-width="2"/><circle cx="274" cy="154" r="5" fill="#d6453d"/></g>
+      <g class="twinkle"><circle cx="124" cy="186" r="8" fill="#f2c94c" stroke="#b8860b"/><circle cx="140" cy="188" r="8" fill="#f2c94c" stroke="#b8860b"/><circle cx="132" cy="177" r="8" fill="#f2c94c" stroke="#b8860b"/></g>`;
+  } else if (kind === 'riddle') {
+    g = `<path d="M146 192V122Q146 80 200 80Q254 80 254 122V192Z" fill="#8c8f9c" stroke="#5e6170" stroke-width="4"/><path d="M164 192V126Q164 98 200 98Q236 98 236 126V192Z" fill="#3a3f5a"/>
+      <circle cx="200" cy="88" r="16" fill="#a3a6b3"/><g class="pulse"><circle cx="194" cy="86" r="3.5" fill="#b78bff"/><circle cx="206" cy="86" r="3.5" fill="#b78bff"/></g><path d="M194 95Q200 100 206 95" stroke="#5e6170" stroke-width="2.4" fill="none"/>
+      <g class="pulse"><circle cx="200" cy="150" r="22" fill="none" stroke="#b78bff" stroke-width="3" stroke-dasharray="4 5"/><circle cx="200" cy="150" r="12" fill="none" stroke="#b78bff" stroke-width="2"/></g>
+      <text class="floaty" x="118" y="124" font-size="30" fill="#fff" font-family="Georgia,serif" style="animation-delay:.2s">?</text>
+      <text class="floaty" x="266" y="110" font-size="36" fill="#fff" font-family="Georgia,serif" style="animation-delay:.9s">?</text>
+      <text class="floaty" x="274" y="160" font-size="24" fill="#fff" font-family="Georgia,serif" style="animation-delay:.5s">?</text>`;
+  } else if (kind === 'gate') {
+    g = `<g class="pulse"><polygon points="200,150 140,84 260,84" fill="#ffe9a0" opacity=".28"/></g>
+      <rect x="126" y="78" width="26" height="114" rx="4" fill="#6a6f86"/><rect x="248" y="78" width="26" height="114" rx="4" fill="#6a6f86"/>
+      <path d="M126 82Q200 20 274 82L274 100Q200 46 126 100Z" fill="#7a7f96"/><path d="M152 192V106Q200 76 248 106V192Z" fill="#241038"/>
+      <g class="swirl"><path d="M200 142m-28 0a28 28 0 1 1 56 0a19 19 0 1 1-38 0a10 10 0 1 1 20 0" fill="none" stroke="#9b6bff" stroke-width="4" stroke-linecap="round"/></g>
+      <g class="pulse"><circle cx="200" cy="146" r="9" fill="#ffe27a"/><path d="M196 150h8l3 22h-14z" fill="#ffe27a"/></g>
+      <g class="eye"><ellipse cx="182" cy="118" rx="5" ry="3" fill="#ff6b57"/><ellipse cx="218" cy="118" rx="5" ry="3" fill="#ff6b57"/></g>`;
+  } else {
+    g = `<path d="M200 194Q200 154 142 128" stroke="#d9c08a" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M200 194Q200 154 258 128" stroke="#d9c08a" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M200 194V112" stroke="#d9c08a" stroke-width="12" stroke-linecap="round" fill="none"/>
+      <rect x="196" y="92" width="8" height="100" fill="#8a5a2b"/>
+      <g class="sway"><path d="M204 98h42l10 8-10 8h-42z" fill="#d9b46a" stroke="#8a5a2b" stroke-width="2"/><path d="M196 122h-42l-10 8 10 8h42z" fill="#d9b46a" stroke="#8a5a2b" stroke-width="2"/><path d="M204 146h36l10 8-10 8h-36z" fill="#d9b46a" stroke="#8a5a2b" stroke-width="2"/></g>
+      <text class="floaty" x="184" y="84" font-size="22" font-family="Georgia,serif" fill="#fff">?</text>`;
+  }
+  return W + `<g transform="translate(0 6) translate(200 198) scale(.8) translate(-200 -198)">${g}</g></svg>`;
+}
+const narr = t => `<div class="narr"><span class="narr-ico" aria-hidden="true">📖</span><div class="narr-text" aria-live="polite">${t}</div></div>`;
+const castHTML = () => G.players.map((p, i) => `<div class="actor" data-p="${p.id}" style="--i:${i}"><span class="fx" aria-hidden="true"></span><div class="av">${avatar(charById(p.charId))}</div><span class="nm">${esc(p.name)}</span></div>`).join('');
+
+function paintPublic({label, scene, prop: pr, walk, act, panel, hope, challenge, title}) {
+  clearTimers();
+  if (label) G.label = label;
+  $app.innerHTML = hudHTML(hope) + `<div class="stage" id="stage"><div class="bd" id="bd"></div><div class="obst" id="obst"></div><div class="pathline"></div><div class="prop" id="prop" aria-hidden="true"></div><div class="bubble" id="bubble" hidden></div><div class="cast" id="cast"></div></div><div class="panel" id="panel">${panel}</div>`;
+  $('bd').innerHTML = backdrop(scene); $('prop').textContent = pr || '';
+  if (challenge) { $('obst').innerHTML = challengeArt(challenge, scene); $('stage').dataset.challenge = challenge; }
+  if (title) $('stage').insertAdjacentHTML('beforeend', `<div class="titlecard" aria-hidden="true"><div><small>${esc(title.kick)}</small><h2>${esc(title.text)}</h2></div></div>`);
+  $('stage').classList.toggle('nopropv', !pr);
+  $('stage').classList.toggle('moving', !['indoor','show'].includes(scene));
+  $('cast').innerHTML = castHTML();
+  $('cast').className = 'cast' + (walk ? ' walk-in' : '') + (act ? ' acting ' + act : '');
+  wireHud(); window.scrollTo(0, 0);
+}
+const actorEl = id => document.querySelector(`#cast [data-p="${id}"]`);
+function say(pid, line) {
+  const p = P(pid), b = $('bubble'); if (!b) return;
+  b.hidden = false; b.innerHTML = `<span class="dot" style="background:${p.color}"></span><b>${esc(p.name)}:</b> ${esc(line)}`;
+  document.querySelectorAll('#cast .actor').forEach(a => a.classList.remove('speaking'));
+  const a = actorEl(pid); if (a) { void a.offsetWidth; a.classList.add('speaking'); }
+}
+function setMood(pid, mood) {
+  const el = actorEl(pid); if (!el) return;
+  const f = el.querySelector('.face'); f.classList.remove('m-love','m-happy','m-meh','m-sad','happy'); f.classList.add('m-' + mood);
+  const fx = el.querySelector('.fx'); fx.textContent = MOOD_FX[mood]; fx.className = 'fx ' + mood;
+}
+const voiceLine = (pid, kind) => pick(VOICE[P(pid).charId][kind]);
+
+/* =====================================================
+   Private turns with the guard
+   ===================================================== */
+function privateTurn(p, what, build) {
+  clearTimers();
+  const cam = G.guard === 'camera' && CV.state === 'ready';
+  const ch = charById(p.charId);
+  $app.innerHTML = hudHTML() + `
+    <div class="secret" id="secret">
+      <div class="lock" id="lock">
+        <div class="big">${avatar(ch)}</div>
+        <h2>Pass the phone to ${esc(p.name)}</h2>
+        <p class="sub">${esc(what.charAt(0).toUpperCase() + what.slice(1))}. Everyone else, look away.</p>
+        ${cam ? `<video class="camprev pending" id="prev" autoplay muted playsinline></video><p class="gstat" id="gstat" role="status">Looking for you…</p>` : `<p class="gstat">Make sure only you can see the screen.</p>`}
+        <button class="btn primary" id="reveal" ${cam ? 'disabled' : ''}>Tap to reveal ▶</button>
+      </div>
+      <div id="content" hidden></div>
+      <div class="breach" id="breach" hidden><div class="bi">🙈</div><h2>Someone’s peeking!</h2><p class="sub" id="bmsg" style="margin:8px 0 6px">Everyone else, look away.</p><p class="sub">Your screen comes back by itself as soon as only you are in view.</p></div>
+    </div>`;
+  wireHud();
+  const prev = $('prev'); if (prev && CV.stream) { prev.srcObject = CV.stream; prev.play().catch(() => {}); }
+  let state = 'pending', revealed = false, unsubG = null, ended = false;
+  const guard = makeGuard();
+  const STAT = {pending:'Hold still, looking for you…', clear:'✓ Just you. Tap to reveal when you’re ready.', empty:'I can’t see anyone. Look at the camera.', crowded:'More than one person in view! Everyone else, look away or step back.'};
+  const finish = () => { if (ended) return; ended = true; if (unsubG) unsubG(); advance(); };
+  const doReveal = () => {
+    if (revealed) return; revealed = true;
+    $('lock').hidden = true;
+    const box = $('content'); box.hidden = false; box.innerHTML = '';
+    build(box, finish, p);
+    if (cam) box.insertAdjacentHTML('afterbegin', `<div class="gbar" id="gbar"><i></i> Guard watching</div>`);
+  };
+  const onFrame = f => {
+    state = guard(f);
+    if (!revealed) {                                   // the camera only unlocks the button. The player always has to tap it.
+      const pv = $('prev'), gs = $('gstat'), rb = $('reveal'); if (!pv) return;
+      pv.className = 'camprev ' + state; gs.textContent = STAT[state]; rb.disabled = state !== 'clear';
+    } else if (state === 'crowded' || state === 'empty') {
+      $('content').hidden = true; $('breach').hidden = false;
+      $('bmsg').textContent = state === 'crowded' ? 'More than one person is in view. Everyone else, look away.' : 'I can’t see you. Look at the camera.';
+    } else if (!$('breach').hidden && state === 'clear') {
+      $('breach').hidden = true; $('content').hidden = false;
+    }
+  };
+  if (cam) unsubG = cvSub(onFrame);
+  $('reveal').onclick = () => { if (cam && state !== 'clear') return; doReveal(); };
+  window.scrollTo(0, 0);
+}
+
+function buildRole(box, done, p) {
+  const v = p.role === 'villain';
+  const steps = (v ? villainSteps() : HERO_STEPS).map(t => `<li>${esc(t)}</li>`).join('');
+  const tips = (v ? VIL_TIPS : HERO_TIPS).map(t => `<li>${esc(t)}</li>`).join('');
+  box.innerHTML = `<div class="rolecard ${v ? 'vil' : ''}"><div class="rbig">${v ? '🗡️' : '🛡️'}</div>
+    <h2>You are ${v ? 'the Villain' : 'a Hero'}</h2>
+    <div class="goalline"><b>Your goal:</b> ${v ? `Sink the quest (finish with Hope under ${WIN_HOPE}) and don’t get named as the Villain.` : `Finish the quest with Hope of ${WIN_HOPE} or more, then unmask the Villain hiding among you.`}</div>
+    <div class="guide"><h3>What to do</h3><ol>${steps}</ol><h3>Good to know</h3><ul>${tips}</ul></div>
+    <div class="actions" style="justify-content:center"><button class="btn primary" id="okRole">Got it. Hide this ▶</button></div></div>`;
+  $('okRole').onclick = done;
+}
+function buildWhisper(box, done, p, ci) {
+  const ch = G.story.chapters[ci];
+  let body;
+  if (p.role === 'villain') {
+    const tag = {good:'A good way', mixed:'A shaky way', trap:'A trap'};
+    body = `<p class="sub">You know the truth. Share it, bend it, or stay quiet.</p>
+      <ul class="truth">${['good','mixed','trap'].flatMap(k => ch.options.filter(o => o.kind === k).map(o => `<li class="${k}"><span style="font-size:1.5rem">${esc(o.emoji)}</span><span><small>${tag[k]}</small>${esc(o.label)}</span></li>`)).join('')}</ul>`;
+  } else {
+    const c = G.clues[ci][p.id];
+    body = `<p class="sub">Share it, hide it, or stretch it. Someone here may be lying to you.</p>
+      <div class="clue"><span class="tag ${c.strong ? '' : 'faint'}">${c.strong ? 'A strong hint' : 'A faint hint'}</span><br>${esc(c.text)}</div>`;
+  }
+  box.innerHTML = `<h2>${esc(ch.title)}</h2>${body}${remind(p.role, 'whisper')}<div class="actions"><button class="btn primary" id="okW">Memorized. Hide this ▶</button></div>`;
+  $('okW').onclick = done;
+}
+
+/* A shared "pick one in secret" screen, by tap or by holding up fingers */
+function secretChoice(box, done, cfg) {
+  const order = shuffle(cfg.items), max = order.length;
+  let chosen = null, locked = false;
+  const gestures = G.guard === 'camera' && CV.state === 'ready';
+  const tog = gestures && cfg.toggle ? cfg.toggle : null;
+  const selMax = Math.min(max, tog ? tog.finger - 1 : 4);          // finger counts that pick an option (a toggle sign is reserved)
+  const tapNote = max > selMax ? (max - selMax === 1 ? ` Option ${max} is chosen by tapping.` : ` Options ${selMax + 1} to ${max} are chosen by tapping.`) : '';
+  const fingText = `✋ Or hold up ${selMax === 1 ? '1 finger' : selMax === 2 ? '1 or 2 fingers' : '1 to ' + selMax + ' fingers'} to the camera for a second and a half.${tapNote}` + (tog ? ` Hold up ${tog.finger} fingers to switch ${tog.name} on or off.` : '');
+  box.innerHTML = `<h2>${esc(cfg.title)}</h2><p class="sub">${esc(cfg.sub)} Your list is in a random order, just for you.</p>
+    ${cfg.before || ''}
+    <div class="vopts" id="vopts">${order.map((it, i) => `<button class="vopt" data-i="${i}"><span class="num">${i + 1}</span>${it.html}</button>`).join('')}</div>
+    ${cfg.extra || ''}
+    ${cfg.remind || ''}
+    ${gestures ? `<div class="fing" id="fing">${fingText}<div class="fbar"><i id="fprog"></i></div><span id="ftxt"></span></div>` : ''}
+    <div class="actions"><button class="btn primary" id="lockV" disabled>Lock in my vote</button></div>`;
+  const sel = i => { chosen = i; box.querySelectorAll('.vopt').forEach(b => b.classList.toggle('sel', +b.dataset.i === i)); $('lockV').disabled = false; };
+  box.querySelector('#vopts').onclick = e => { if (locked) return; const b = e.target.closest('.vopt'); if (b) sel(+b.dataset.i); };
+  const tgl = box.querySelector('#shadowT');
+  if (tgl) tgl.onchange = () => { const st = $('togState'); if (st) st.textContent = tgl.checked ? 'ON' : 'OFF'; };
+  let unsubF = null;
+  const lock = () => {
+    if (locked || chosen === null) return; locked = true; if (unsubF) unsubF();
+    cfg.onLock(order[chosen].key, box);
+    box.innerHTML = `<div class="sealed"><div class="tk" aria-hidden="true">🎟️</div><h2>Vote sealed</h2><p class="sub" style="margin:6px 0 18px">Nobody can see it now.</p><button class="btn primary" id="passOn">Continue ▶</button></div>`;
+    $('passOn').onclick = done;
+    if (G.guard === 'camera' && CV.state === 'ready') later(done, 1400);   // nothing left to read, so move on by itself
+  };
+  $('lockV').onclick = lock;
+  if (gestures) {
+    CV.wantHands = true;
+    let cur = null, since = 0, tstart = 0, togReady = true, rel = 0;
+    unsubF = cvSub(f => {
+      const fp = $('fprog'), ft = $('ftxt');
+      if (locked || $('content').hidden) { cur = null; since = 0; tstart = 0; if (fp) fp.style.width = '0'; return; }
+      if (!fp) return;
+      const v = f.fingers;
+      if (tog) {                                           // the 4-finger sign flips the switch, once per raise
+        if (v === tog.finger) {
+          rel = 0; cur = null; since = 0;
+          if (!togReady) { ft.textContent = 'Lower your hand to switch it again.'; fp.style.width = '0'; return; }
+          if (!tstart) tstart = f.t;
+          const pr = Math.min(1, (f.t - tstart) / 900);
+          fp.style.width = (pr * 100) + '%'; ft.textContent = `Detected ${v}. Hold to switch ${tog.name}…`;
+          if (pr >= 1) { tstart = 0; togReady = false; tog.flip(); const el = $('shadowT'); ft.textContent = `${tog.name.charAt(0).toUpperCase() + tog.name.slice(1)} is now ${el && el.checked ? 'ON' : 'OFF'}.`; }
+          return;
+        }
+        tstart = 0;
+        if (!togReady) { if (!rel) rel = f.t; if (f.t - rel >= 400) { togReady = true; rel = 0; } }
+      }
+      const ok = v != null && v >= 1 && v <= selMax;
+      if (!ok) { cur = null; since = 0; fp.style.width = '0'; if (!tog || togReady) ft.textContent = ''; return; }
+      if (v !== cur) { cur = v; since = f.t; }
+      const pr = Math.min(1, (f.t - since) / 1500);
+      fp.style.width = (pr * 100) + '%'; ft.textContent = `Detected ${v}. Hold steady…`;
+      if (pr >= 1) { sel(v - 1); lock(); }
+    });
+  }
+}
+/* Each player's whisper, shown again while they vote so it is easy to remember */
+function hintBox(ch, ci, p) {
+  if (p.role === 'villain') {
+    const tag = {good:'Good', mixed:'Shaky', trap:'Trap'};
+    return `<div class="hintbox"><b>Your whisper: the truth</b><ul class="truth compact">${['good','mixed','trap'].flatMap(k => ch.options.filter(o => o.kind === k).map(o => `<li class="${k}"><span>${esc(o.emoji)}</span><span><small>${tag[k]}</small>${esc(o.label)}</span></li>`)).join('')}</ul></div>`;
+  }
+  const c = G.clues[ci][p.id];
+  return `<div class="hintbox"><b>Your whisper</b><div class="clue"><span class="tag ${c.strong ? '' : 'faint'}">${c.strong ? 'A strong hint' : 'A faint hint'}</span><br>${esc(c.text)}</div></div>`;
+}
+function buildVote(box, done, p, ci) {
+  const ch = G.story.chapters[ci], villain = p.role === 'villain';
+  const flip = () => { const el = $('shadowT'); if (!el) return; el.checked = !el.checked; const st = $('togState'); if (st) st.textContent = el.checked ? 'ON' : 'OFF'; };
+  secretChoice(box, done, {
+    title: 'Cast your secret vote', sub: ch.title + '.',
+    items: ch.options.map((o, i) => ({key:i, html:`<span class="ve">${esc(o.emoji)}</span><span class="vl">${esc(o.label)}</span>`})),
+    remind: remind(p.role, 'vote'), before: hintBox(ch, ci, p),
+    // Only the Villain has the switch (tap it, or hold up 4 fingers in camera mode). Heroes have nothing on that sign.
+    extra: villain ? `<label class="shadow"><input type="checkbox" id="shadowT"><span>🦇 Shadow of the Gloom: <b id="togState">OFF</b> <small>(${G.tokens} left${G.tokens ? '' : ', so it won’t work'})</small></span></label>` : '',
+    toggle: villain ? {finger:4, name:'your Shadow', flip} : null,
+    onLock: (key, bx) => {
+      (G.votes[ci] = G.votes[ci] || {})[p.id] = key;
+      const sh = bx.querySelector('#shadowT');
+      if (villain && G.tokens > 0 && sh && sh.checked) { G.cursed[ci] = true; G.tokens--; }
+    }
+  });
+}
+function buildAccuse(box, done, p) {
+  const others = G.players.filter(x => x.id !== p.id);
+  secretChoice(box, done, {
+    title: 'Who is the Villain?', sub: 'Name your suspect.',
+    items: others.map(o => ({key:o.id, html:`<span class="va">${avatar(charById(o.charId))}</span><span class="vl">${esc(o.name)}</span>`})),
+    remind: remind(p.role, 'accuse'),
+    onLock: key => { G.accuse[p.id] = key; }
+  });
+}
+
+/* =====================================================
+   Public cut scenes
+   ===================================================== */
+function screenIntro() {
+  paintPublic({label:'Prologue', scene:'outdoor', prop:'🏰', walk:true, act:'calm', hope:G.hope, panel:
+    `<h2>${esc(G.story.title)}</h2><p class="lede" style="margin:8px 0 0">${esc(G.story.premise)}</p>
+     <div class="pcast">${G.players.map(p => `<span class="pc"><span class="mv">${avatar(charById(p.charId))}</span>${esc(p.name)}</span>`).join('')}</div>
+     <div class="notice">🗡️ <b>One of you is the Villain.</b> Heroes: finish the quest and unmask them. Villain: sink the quest and stay hidden.</div>
+     ${G.pendingNotice ? `<div class="banner err">${esc(G.pendingNotice)}</div>` : ''}
+     <div class="actions"><button class="btn primary" id="go">Begin chapter 1 ▶</button></div>`});
+  G.pendingNotice = '';
+  G.players.forEach((p, i) => later(() => say(p.id, INTRO_LINES[i % INTRO_LINES.length]), 1200 + i * 1700));
+  $('go').onclick = advance;
+}
+function screenChapter(ci) {
+  const ch = G.story.chapters[ci], N = G.story.chapters.length, sp = P(ch.spotId);
+  paintPublic({label:`Chapter ${ci + 1} of ${N}`, scene:ch.scene, prop:'', challenge:ch.challenge, title:{kick:`Chapter ${ci + 1} of ${N}`, text:ch.title}, walk:true, act:'calm', panel:
+    `<p class="kick">Chapter ${ci + 1} of ${N}</p><h2>${esc(ch.title)}</h2>
+     <div style="margin-top:10px">${narr(esc(ch.narration))}</div>
+     <div class="optlist">${ch.options.map(o => `<div class="opt"><span class="oe" aria-hidden="true">${esc(o.emoji)}</span><b>${esc(o.label)}</b></div>`).join('')}</div>
+     <p class="meta" style="margin-top:12px">🔦 ${esc(sp.name)} is in the spotlight. If they’re a Hero, their hint is a strong one.</p>
+     <div class="actions"><button class="btn primary" id="go">Receive your whispers ▶</button></div>`});
+  const sa = actorEl(sp.id); if (sa) sa.classList.add('spot');
+  later(() => say(sp.id, 'This is my home ground. Listen closely.'), 3700);
+  $('go').onclick = advance;
+}
+function screenDiscuss(s) {
+  const acc = !!s.accuse, N = G.story.chapters.length;
+  const starters = acc
+    ? ['Whose claims did not match the truth you just saw?','Who pushed for a path that went badly?','Did a spotlight traveler claim only a faint hint?','Who stayed suspiciously quiet?']
+    : ['What did your whisper say?','Does anyone’s hint clash with yours?','Which path feels safest, and why?','Who should we trust this time?'];
+  paintPublic({label: acc ? 'Judgment' : `Chapter ${s.ci + 1} of ${N}`, scene:'night', prop:'💬', walk:false, act:'', panel:
+    `<h2>${acc ? 'Who served the Gloom?' : 'Talk it over'}</h2>
+     <div style="margin-top:10px">${narr(acc ? 'Someone among you served the Gloom in secret. Compare what each person told you with the truth, and take as long as you need. Then each of you will name a suspect in private.' : 'Put the phone down and talk. Share your whisper, hide it, or stretch it. One of you may be lying. Take as long as you like.')}</div>
+     <p class="meta" style="margin-top:12px">Try asking:</p>
+     <ul class="starters">${starters.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+     <div class="actions"><button class="btn primary" id="go" data-nothumb="1">${acc ? 'We’re ready to name a suspect ▶' : 'We’ve talked it over. Vote ▶'}</button></div>`});
+  $('go').onclick = advance;
+}
+function screenResult(ci) {
+  resolveChapter(ci);
+  const ch = G.story.chapters[ci], r = G.results[ci], N = G.story.chapters.length;
+  const resultText = r.dithered ? 'The party can’t agree. They argue in circles until the shaky way is the only one left, and they stumble through it.' : ch.options[r.win].result;
+  const mood = {good:'love', mixed:'meh', trap:'sad'}[r.kind];
+  const burst = {good:'✨', mixed:'💨', trap:'💥'}[r.kind];
+  paintPublic({label:`Chapter ${ci + 1} of ${N}`, scene:ch.scene, prop:'', challenge:ch.challenge, walk:false, act:'', hope:r.before, panel:
+    `${narr('The votes are in…')}
+     <div class="tally">${ch.options.map((o, k) => `<div class="trow ${k === r.win ? 'win' : ''}" style="--k:${k}"><span class="te" aria-hidden="true">${esc(o.emoji)}</span><span class="tmid">${esc(o.label)}</span><span class="tcount">${r.counts[k]}</span></div>`).join('')}</div>
+     ${r.dithered ? `<p class="meta later" style="--d:1.6s;margin-top:8px"><b>A tie!</b> Nobody won, so the party dithers.</p>` : ''}
+     <div class="later" style="--d:2s;margin-top:14px">${narr(esc(resultText))}</div>
+     ${r.cursed ? `<div class="notice later" style="--d:3s">🦇 A cold shadow slipped across the party, and something went quietly wrong. Someone here is working against you.</div>` : ''}
+     <div class="later" style="--d:3.6s"><p class="meta" style="margin-top:12px">Hope: ${r.before} → <b>${r.after}</b></p>
+     <div class="actions"><button class="btn primary" id="go">${G.hope <= 0 ? 'The light fades… ▶' : (ci >= N - 1 ? 'To the finale ▶' : 'On to chapter ' + (ci + 2) + ' ▶')}</button></div></div>`});
+  later(() => {
+    const st = $('stage'); if (st) { st.classList.add('res-' + r.kind); st.insertAdjacentHTML('beforeend', `<div class="burst" aria-hidden="true">${burst}</div>`); }
+    G.players.forEach(p => setMood(p.id, mood)); setHope(r.after); say(ch.spotId, voiceLine(ch.spotId, r.kind));
+  }, 2000);
+  later(() => { const other = pick(G.players.filter(p => p.id !== ch.spotId)); say(other.id, voiceLine(other.id, r.kind)); }, 4400);
+  $('go').onclick = advance;
+}
+function screenFinale() {
+  const N = G.story.chapters.length, completed = G.hope > 0;
+  G.questWon = completed && G.hope >= WIN_HOPE;
+  paintPublic({label:'Finale', scene: G.questWon ? 'outdoor' : 'night', prop: G.questWon ? '🏆' : '🦇', walk:false, act:'', panel:
+    `<p class="kick">${G.questWon ? 'The quest is won' : 'The quest is lost'}</p>
+     <h2>${G.questWon ? 'Victory at the last gate' : (completed ? 'The light was too faint' : 'The light has gone out')}</h2>
+     <div style="margin-top:10px">${narr(esc(!completed ? 'Hope ran out before the tale was done. ' + G.story.lose : G.questWon ? G.story.win : G.story.lose))}</div>
+     <p class="meta" style="margin-top:12px">Final hope: <b>${G.hope}</b> of 10. You needed ${WIN_HOPE}.</p>
+     <div class="notice">🗡️ But the tale isn’t over. <b>One of you was the Villain.</b> Time to find out who.</div>
+     <div class="actions"><button class="btn primary" id="go">Face the judgment ▶</button></div>`});
+  G.players.forEach(p => setMood(p.id, G.questWon ? 'love' : 'sad'));
+  void N;
+  $('go').onclick = advance;
+}
+function screenTruth() {
+  const tagName = {good:'Best', mixed:'Shaky', trap:'Trap'};
+  const rows = G.story.chapters.map((c, i) => {
+    const r = G.results[i]; if (!r) return '';
+    return `<div class="truth-row"><div class="tt">${i + 1}. ${esc(c.title)}${r.dithered ? ' <small>(the party dithered)</small>' : ''}</div>
+      ${c.options.map((o, k) => `<div class="kopt ${k === r.win ? 'pickd' : ''}"><span class="kt ${o.kind}">${tagName[o.kind]}</span><span aria-hidden="true">${esc(o.emoji)}</span><span>${esc(o.label)}${k === r.win ? ' ← you chose this' : ''}</span></div>`).join('')}</div>`;
+  }).join('');
+  paintPublic({label:'The truth', scene:'night', prop:'🔍', walk:false, act:'', panel:
+    `${narr('Here is what was really true in every chapter. Think back to what each of you said out loud. Heroes never gave a false hint.')}${rows}
+     <div class="actions"><button class="btn primary" id="go">Talk it over ▶</button></div>`});
+  $('go').onclick = advance;
+}
+function screenAccuseReveal() {
+  const tallies = {}; G.players.forEach(p => tallies[p.id] = 0);
+  Object.values(G.accuse).forEach(t => tallies[t]++);
+  const max = Math.max(...Object.values(tallies)), top = Object.keys(tallies).filter(k => tallies[k] === max);
+  G.accusedByCoin = top.length > 1;
+  G.accused = top.length === 1 ? top[0] : top[randInt(top.length)];
+  G.caught = G.accused === G.villainId;
+  const lines = G.players.map(p => `<div class="trow later" style="--d:${1 + G.players.indexOf(p) * 1.5}s"><span class="te" style="width:36px;height:36px">${avatar(charById(p.charId))}</span><span class="tmid">${esc(p.name)} accuses <b>${esc(P(G.accuse[p.id]).name)}</b></span></div>`).join('');
+  const t = 1 + G.players.length * 1.5;
+  paintPublic({label:'Judgment', scene:'show', prop:'🥁', walk:false, act:'', panel:
+    `${narr('Each of you has named a suspect…')}<div class="tally">${lines}</div>
+     <div class="later" style="--d:${t}s;margin-top:14px">${G.accusedByCoin ? narr(`A tie! Fate points at <b>${esc(P(G.accused).name)}</b>.`) : narr(`The group points at <b>${esc(P(G.accused).name)}</b>!`)}</div>
+     <div class="actions later" style="--d:${t + 1.2}s"><button class="btn primary" id="go">Unmask the Villain ▶</button></div>`});
+  G.players.forEach((p, i) => later(() => { const a = actorEl(p.id); if (a) { a.classList.add('speaking'); } }, 1000 + i * 1500));
+  $('go').onclick = advance;
+}
+function screenEnding() {
+  const v = P(G.villainId), won = G.questWon, caught = G.caught, N = G.story.chapters.length;
+  const tier = won && caught ? ['🏆','Heroes win!','You finished the quest and unmasked the Villain.'] :
+               won && !caught ? ['🌗','A split verdict','The quest was won, but the Villain walks free.'] :
+               !won && caught ? ['🌗','A split verdict','The quest fell apart, but you unmasked the Villain.'] :
+                                ['🗡️','The Villain wins!','The quest failed and nobody saw the traitor coming.'];
+  const wrong = G.accused && !caught ? P(G.accused).name : '';
+  const shadows = Object.keys(G.cursed).map(i => +i + 1);
+  const led = G.story.chapters.map((c, i) => `<div class="lr"><div class="lt">${i + 1}. ${esc(c.title)}${G.cursed[i] ? ' 🦇' : ''}</div>${
+    G.players.map(p => { const k = (G.votes[i] || {})[p.id]; return k === undefined ? '' : `<span class="pk"><span class="la">${avatar(charById(p.charId))}</span>${esc(c.options[k].emoji)}</span>`; }).join('')}</div>`).join('');
+  paintPublic({label:'The end', scene: won ? 'outdoor' : 'night', prop: tier[0], walk:false, act:'', panel:
+    `<div class="endban"><div class="eb" aria-hidden="true">${tier[0]}</div><h2>${tier[1]}</h2><p class="lede" style="margin:6px auto 0">${tier[2]}</p></div>
+     <div class="unmask"><span class="uv">${avatar(charById(v.charId))}</span><div><b>It was ${esc(v.name)}!</b><br><span style="opacity:.85">${shadows.length ? `Cast shadows in chapter${shadows.length > 1 ? 's' : ''} ${shadows.join(' and ')}.` : 'Never cast a single shadow.'}</span></div></div>
+     ${wrong ? `<p class="meta">The group wrongly accused ${esc(wrong)}.</p>` : ''}
+     <div class="checks">
+       <div class="ck ${won ? 'ok' : 'no'}"><span class="mk">${won ? '✓' : '✕'}</span><span>Heroes: complete the quest</span></div>
+       <div class="ck ${caught ? 'ok' : 'no'}"><span class="mk">${caught ? '✓' : '✕'}</span><span>Heroes: unmask the Villain</span></div>
+       <div class="ck ${!won ? 'ok' : 'no'}"><span class="mk">${!won ? '✓' : '✕'}</span><span>Villain: sink the quest</span></div>
+       <div class="ck ${!caught ? 'ok' : 'no'}"><span class="mk">${!caught ? '✓' : '✕'}</span><span>Villain: stay hidden</span></div></div>
+     <p class="lbl" style="margin-top:16px">Who voted for what</p><div class="led">${led}</div>
+     <div class="actions"><button class="btn primary" id="again">Play again with this cast</button><button class="btn ghost" id="home">Back to the cast</button></div>`});
+  G.players.forEach(p => setMood(p.id, p.id === G.villainId ? (won && caught ? 'sad' : won ? 'meh' : 'love') : (won && caught ? 'love' : won ? 'meh' : 'sad')));
+  void N;
+  $('again').onclick = () => { leaveGame(); beginTale(); };
+  $('home').onclick = leaveGame;
+}
+
+render();
+})();
+</script>
+</body>
+</html>
