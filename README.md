@@ -1,1 +1,0 @@
-# researchyorkt.github.io
